@@ -1,0 +1,11 @@
+/*
+
+File: Prefix.pch
+Abstract: This file is included for support purposes and isn't necessary for
+understanding this sample.
+
+*/
+
+#ifdef __OBJC__
+	#import <UIKit/UIKit.h>
+#endif
