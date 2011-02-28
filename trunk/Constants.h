@@ -1,1 +1,0 @@
-#define degreesToRadian(x) (3.14159265358979323846 * x / 180.0)
