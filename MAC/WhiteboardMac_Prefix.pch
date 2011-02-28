@@ -1,0 +1,28 @@
+//
+// Prefix header for all source files of the 'WhiteboardMac' target in the 'WhiteboardMac' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
+
+// NOTE: DLog messages are only shown when the app is compiled with the Debug configuration.
+
+
+// DLog is almost a drop-in replacement for NSLog
+// DLog();
+// DLog(@"here");
+// DLog(@"value: %d", x);
+// Unfortunately this doesn't work DLog(aStringVariable); you have to do this instead DLog(@"%@", aStringVariable);
+#ifdef DEBUG
+#       define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#else
+#       define DLog(...)
+#endif
+
+// ALog always displays output regardless of the DEBUG setting
+#define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+
+#define INTERNET_INCLUDING 0
+#define INTERNET_SUPPORTING 0
+#define APP_DELEGATE "WhiteboardMacAppDelegate.h"

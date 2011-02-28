@@ -1,0 +1,37 @@
+//
+//  NSCursor+CustomCursors.m
+//  WhiteboardMac
+//
+//  Created by Hector Zhao on 1/26/11.
+//  Copyright 2011 GreenGar studios. All rights reserved.
+//
+
+#import "NSCursor+CustomCursors.h" 
+
+@implementation NSCursor (CustomCursors) 
+
++ (NSCursor *)panCursor 
+{ 
+    static NSCursor *panCursor = nil; 
+    if (!panCursor) { 
+        NSImage *pan = [NSImage imageNamed:@"Pan_Icon"]; 
+        NSPoint hotspot = NSMakePoint(10.0f, 10.0f); 
+        panCursor = [[NSCursor alloc] 
+					   initWithImage:pan hotSpot:hotspot]; 
+    } 
+    return panCursor; 
+} 
+
++ (NSCursor *)zoomCursor 
+{ 
+    static NSCursor *zoomCursor = nil; 
+    if (!zoomCursor) { 
+        NSImage *zoom = [NSImage imageNamed:@"Zoom_Icon"]; 
+        NSPoint hotspot = NSMakePoint(10.0f, 10.0f); 
+        zoomCursor = [[NSCursor alloc] 
+					 initWithImage:zoom hotSpot:hotspot]; 
+    } 
+    return zoomCursor; 
+}
+
+@end 
