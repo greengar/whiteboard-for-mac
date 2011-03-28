@@ -24,7 +24,7 @@ alpha:1.0]
 #define kEraseButtonWidth		100.0//105.0//125.0
 
 #define kPickerHeight 76
-#define kPickerWidth  912
+#define kPickerWidth  836 //912
 
 @interface Picker : NSImageView  {
 	
