@@ -97,7 +97,7 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
 
 - (BOOL)start:(NSError **)error {
 	
-	NSLog(@"TCP server start");
+	DLog(@"TCP server start");
 	
     CFSocketContext socketCtxt = {0, self, NULL, NULL, NULL};
     _ipv4socket = CFSocketCreate(kCFAllocatorDefault, PF_INET, SOCK_STREAM, IPPROTO_TCP, kCFSocketAcceptCallBack, (CFSocketCallBack)&TCPServerAcceptCallBack, &socketCtxt);
