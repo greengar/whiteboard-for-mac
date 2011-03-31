@@ -10,6 +10,9 @@
 #import "PaintingView.h"
 #include <math.h>
 
+#define kScreenWidth  1024
+#define kScreenHeight 768
+
 @interface MainPaintingView : PaintingView {
 	NSPoint pointInView;
 	NSPoint pointBeganInView;
@@ -42,6 +45,10 @@
 - (void)pushScreenToUndoStack:(CGImageRef)image;
 - (void)pushScreenToRedoStack:(CGImageRef)image;
 - (void)releaseRedoStack;
+- (void)mousePan:(NSPoint)location;
+- (void)mousePanWithVector: (NSPoint) location;
+- (void)mouseZoom:(GLfloat)aperture;
+- (void)performZoom:(GLfloat) newAperture atCenter:(NSPoint)center;
 
 - (void)renderLocalLineFromPoint:(NSPoint)start toPoint:(NSPoint)end;
 @end

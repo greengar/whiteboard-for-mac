@@ -52,8 +52,27 @@ GLint gDollyPanStartPoint[2] = {0, 0};
 		isEndOfDrawingLine = FALSE;
 		
 		isBeing180Rotated = FALSE;
+        
+        //Test
+        [self performSelector:@selector(test) withObject:nil afterDelay:2.0];
 	}
 	return self;
+}
+
+- (void)test {
+    
+    [NSAppDelegate changePointSize:50];
+
+    NSPoint locationInWindow = NSMakePoint(0, 0);
+
+    NSPoint locationInDrawing = NSMakePoint(locationInWindow.x, locationInWindow.y);
+
+    [self renderLocalLineFromPoint:locationInDrawing toPoint:locationInDrawing];       
+    
+    [self performZoom:4.0 atCenter:NSMakePoint(0, 0)];
+    [self performZoom:1.0 atCenter:NSMakePoint(0, 0)];
+//    [self performZoom:0.5 atCenter:NSMakePoint(512, 384)];
+//    [self performZoom:0.5 atCenter:NSMakePoint(512, 384)];    
 }
 
 - (void)rotate180Degree {
@@ -98,12 +117,12 @@ GLint gDollyPanStartPoint[2] = {0, 0};
 		pointBeganInView = [self convertPoint:[theEvent locationInWindow] fromView:nil];		
 
 		pointInView.x += -camera.viewPos.x;
-		pointInView.y += camera.viewPos.y;
+		pointInView.y += -camera.viewPos.y;
 		pointInView.x /= camera.aperture;
 		pointInView.y /= camera.aperture;
 		
 		pointBeganInView.x += -camera.viewPos.x;
-		pointBeganInView.y += camera.viewPos.y;
+		pointBeganInView.y += -camera.viewPos.y;
 		pointBeganInView.x /= camera.aperture;
 		pointBeganInView.y /= camera.aperture;
 		
@@ -132,26 +151,70 @@ GLint gDollyPanStartPoint[2] = {0, 0};
 	[super mouseMoved:theEvent];
 }*/
 
-- (void)scrollWheel:(NSEvent *)theEvent
-{
+- (void)scrollWheel:(NSEvent *)theEvent {
     float wheelDelta = [theEvent deltaX] + [theEvent deltaY] + [theEvent deltaZ];
-    if (wheelDelta)
-    {
+    if (wheelDelta) {
 		GLfloat deltaAperture = 0;
+
 		if (fabs([theEvent deltaX]) >= fabs([theEvent deltaY])) {
 			deltaAperture = wheelDelta * -camera.aperture / 200.0f;
 		}
 		else {
 			deltaAperture = wheelDelta * camera.aperture / 200.0f;
 		}
-        camera.aperture += deltaAperture;
-        if (camera.aperture < 0.2) // do not let aperture <= 0.2
+        
+        if (camera.aperture < 0.2) { // do not let aperture <= 0.2
             camera.aperture = 0.2;
-        if (camera.aperture > 4.9) // do not let aperture >= 5.0
+        }
+        else if (camera.aperture > 4.9) { // do not let aperture >= 5.0
             camera.aperture = 4.9;
-        //[self updateProjection]; // update projection matrix
+        } 
+        else {
+            
+            NSPoint locationInView = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+            
+            GLfloat newAperture = camera.aperture + deltaAperture;
+        
+            [self performZoom:newAperture atCenter:locationInView];
+        }
+        
         [self setNeedsDisplay: YES];
     }
+}
+
+- (void)performZoom:(GLfloat) newAperture atCenter:(NSPoint)center {
+    
+    NSPoint locationInWindow = NSMakePoint(center.x, center.y);
+    
+    NSPoint locationInDrawing = NSMakePoint(locationInWindow.x, locationInWindow.y);
+    
+    locationInDrawing.x -= camera.viewPos.x;
+    locationInDrawing.y -= camera.viewPos.y;
+    locationInDrawing.x /= camera.aperture;
+    locationInDrawing.y /= camera.aperture;
+        
+    NSPoint locationInTexture = NSMakePoint(kScreenHeight - locationInDrawing.y, locationInDrawing.x);
+    
+    NSPoint destinationInTexture = NSMakePoint(locationInTexture.x * newAperture, locationInTexture.y * newAperture);
+    
+    NSPoint destinationInDrawing = NSMakePoint(destinationInTexture.y, kScreenHeight - destinationInTexture.x);
+    
+    NSPoint destinationInWindow = NSMakePoint(destinationInDrawing.x, destinationInDrawing.y);
+    
+    destinationInWindow.x += camera.viewPos.x;
+    destinationInWindow.y += camera.viewPos.y;
+    destinationInWindow.x *= camera.aperture;
+    destinationInWindow.y *= camera.aperture;
+    
+    NSPoint panBack = NSMakePoint(locationInWindow.x - destinationInWindow.x, locationInWindow.y - destinationInWindow.y);
+    
+    [self mousePanWithVector:panBack];
+    
+    NSPoint additionalPan = NSMakePoint(0, (1 - newAperture) * kScreenHeight * camera.aperture);
+    
+    [self mousePanWithVector:additionalPan];
+    
+    [self mouseZoom:newAperture];
 }
 
 - (void)performZoom: (NSPoint) location {
@@ -165,16 +228,24 @@ GLint gDollyPanStartPoint[2] = {0, 0};
 	[self setNeedsDisplay: YES];
 }
 
+- (void)mousePanWithVector: (NSPoint) location {
+	camera.viewPos.x += location.x;
+	camera.viewPos.y += location.y;
+    DLog("@pan: %f,%f", camera.viewPos.x, camera.viewPos.y);	
+}
+
 // move camera in x/y plane
-- (void)mousePan: (NSPoint) location
-{
-	GLfloat panX = (gDollyPanStartPoint[0] - location.x) ;/// (1024.0f / -camera.viewPos.z);
-	GLfloat panY = (gDollyPanStartPoint[1] - location.y) ;/// (768.0f / -camera.viewPos.z);
+- (void)mousePan: (NSPoint) location {
+    GLfloat panX = (gDollyPanStartPoint[0] - location.x) ;/// (1024.0f / -camera.viewPos.z);
+    GLfloat panY = (gDollyPanStartPoint[1] - location.y) ;/// (768.0f / -camera.viewPos.z);
 	camera.viewPos.x -= panX;
-	camera.viewPos.y -= panY;
-	gDollyPanStartPoint[0] = location.x;
-	gDollyPanStartPoint[1] = location.y;
-	
+	camera.viewPos.y += panY;
+    gDollyPanStartPoint[0] = location.x;
+    gDollyPanStartPoint[1] = location.y;
+}
+
+- (void)mouseZoom:(GLfloat)aperture {
+    camera.aperture *= aperture;
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent {
@@ -206,7 +277,7 @@ GLint gDollyPanStartPoint[2] = {0, 0};
 		NSPoint locationInView = [self convertPoint:[theEvent locationInWindow]	fromView:nil];
 		
 		locationInView.x += -camera.viewPos.x;
-		locationInView.y += camera.viewPos.y;
+		locationInView.y += -camera.viewPos.y;
 		locationInView.x /= camera.aperture;
 		locationInView.y /= camera.aperture;
 		
@@ -276,7 +347,7 @@ GLint gDollyPanStartPoint[2] = {0, 0};
 		NSPoint locationInView = [self convertPoint:[theEvent locationInWindow]	fromView:nil];
 		
 		locationInView.x += -camera.viewPos.x;
-		locationInView.y += camera.viewPos.y;
+		locationInView.y += -camera.viewPos.y;
 		locationInView.x /= camera.aperture;
 		locationInView.y /= camera.aperture;
 		
