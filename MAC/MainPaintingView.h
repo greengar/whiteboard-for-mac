@@ -51,6 +51,9 @@
 
 - (void)mouseZoom:(GLfloat)aperture;
 - (void)mouseZoomWithClick:(NSPoint)location;
+
+- (NSPoint)reLocateCenterIfZoomFromOutside:(NSPoint)center;
+
 - (void)performZoom:(GLfloat)ratio atCenter:(NSPoint)center;
 
 - (NSPoint) pointWithoutCameraEffect:(NSPoint)original;

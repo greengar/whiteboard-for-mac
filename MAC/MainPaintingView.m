@@ -155,12 +155,26 @@ GLint gDollyPanStartPoint[2] = {0, 0};
     }
 }
 
+- (NSPoint) reLocateCenterIfZoomFromOutside:(NSPoint)center {
+    
+    NSPoint locationInWindow = NSMakePoint(center.x, center.y);
+    
+    NSPoint locationInDrawing = NSMakePoint(locationInWindow.x - camera.viewPos.x, locationInWindow.y - camera.viewPos.y);
+    
+    if(locationInDrawing.x < 0 || locationInDrawing.x > kScreenWidth * camera.aperture || locationInDrawing.y < 0 || locationInDrawing.y > kScreenHeight * camera.aperture) {
+        
+        return [self pointWithCameraEffect:NSMakePoint(kScreenWidth/2, kScreenHeight/2)];
+    }
+    
+    return locationInWindow;
+}
+
 - (void)performZoom:(GLfloat)ratio atCenter:(NSPoint)center {
     
     if ((camera.aperture <= 0.2 && ratio <= 1.0) || (camera.aperture >= 4.9 && ratio >= 1.0))
         ratio = 1.0;
     
-    NSPoint locationInWindow = NSMakePoint(center.x, center.y);
+    NSPoint locationInWindow = [self reLocateCenterIfZoomFromOutside:NSMakePoint(center.x, center.y)];
     
     NSPoint locationInDrawing = [self pointWithoutCameraEffect:locationInWindow];
         
@@ -182,7 +196,7 @@ GLint gDollyPanStartPoint[2] = {0, 0};
 
 - (void)mouseZoomWithClick:(NSPoint)location {
     
-	float wheelDelta = pointInView.x - location.x + pointInView.y - location.y;
+	float wheelDelta = (pointInView.x - location.x + pointInView.y - location.y) / 10;
     
 	GLfloat deltaAperture = wheelDelta * -camera.aperture / 200.0f;
     
@@ -285,14 +299,18 @@ GLint gDollyPanStartPoint[2] = {0, 0};
 //		[self updateProjection];  // update projection matrix (not normally done on draw)
 //		[self setNeedsDisplay: YES];
 	} else if (gPan) {
-		NSPoint location = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-		location.y = camera.viewHeight - location.y;
-		[self mousePan: location];
+        
+		NSPoint locationInView = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+		locationInView.y = camera.viewHeight - locationInView.y;
+		[self mousePan:locationInView];
 		[self setNeedsDisplay: YES];
+        
 	} else if ([NSAppDelegate getMode] == zoomMode) {
+        
 		[self scrollWheel:theEvent];
-		NSPoint location = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-		[self mouseZoomWithClick:location];
+		NSPoint locationInView = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+		[self mouseZoomWithClick:locationInView];
+        
 	} else {
 		
 		NSPoint locationInView = [self convertPoint:[theEvent locationInWindow]	fromView:nil];
