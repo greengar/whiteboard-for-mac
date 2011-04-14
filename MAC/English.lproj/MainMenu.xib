@@ -568,8 +568,6 @@
 									<int key="NSvFlags">12</int>
 									<string key="NSFrame">{{1, 14}, {5, 32}}</string>
 									<reference key="NSSuperview"/>
-									<reference key="NSWindow"/>
-									<reference key="NSNextKeyView"/>
 									<double key="NSViewAlphaValue">0.5</double>
 									<string key="NSOffsets">{0, 0}</string>
 									<object class="NSTextFieldCell" key="NSTitleCell">
@@ -779,7 +777,7 @@
 						<reference ref="879153441"/>
 						<reference ref="651732952"/>
 					</object>
-					<object class="NSArray" key="NSToolbarIBDefaultItems">
+					<object class="NSMutableArray" key="NSToolbarIBDefaultItems">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<reference ref="1035990606"/>
 						<reference ref="629520313"/>
@@ -1108,6 +1106,30 @@
 						<reference key="destination" ref="480558214"/>
 					</object>
 					<int key="connectionID">730</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">panToolbarItem</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="621984212"/>
+					</object>
+					<int key="connectionID">731</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">zoomInToolbarItem</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="161077581"/>
+					</object>
+					<int key="connectionID">732</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">zoomOutToolbarItem</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="700210517"/>
+					</object>
+					<int key="connectionID">733</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1704,7 +1726,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">730</int>
+			<int key="maxID">733</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1878,10 +1900,13 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>customAlertTableDialogWindow</string>
 							<string>networkToolbarItem</string>
+							<string>panToolbarItem</string>
 							<string>redoToolbarItem</string>
 							<string>undoToolbarItem</string>
 							<string>viewModePopUpButton</string>
 							<string>window</string>
+							<string>zoomInToolbarItem</string>
+							<string>zoomOutToolbarItem</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1889,8 +1914,11 @@
 							<string>NSToolbarItem</string>
 							<string>NSToolbarItem</string>
 							<string>NSToolbarItem</string>
+							<string>NSToolbarItem</string>
 							<string>NSPopUpButton</string>
 							<string>NSWindow</string>
+							<string>NSToolbarItem</string>
+							<string>NSToolbarItem</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -1899,10 +1927,13 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>customAlertTableDialogWindow</string>
 							<string>networkToolbarItem</string>
+							<string>panToolbarItem</string>
 							<string>redoToolbarItem</string>
 							<string>undoToolbarItem</string>
 							<string>viewModePopUpButton</string>
 							<string>window</string>
+							<string>zoomInToolbarItem</string>
+							<string>zoomOutToolbarItem</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1912,6 +1943,10 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">networkToolbarItem</string>
+								<string key="candidateClassName">NSToolbarItem</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">panToolbarItem</string>
 								<string key="candidateClassName">NSToolbarItem</string>
 							</object>
 							<object class="IBToOneOutletInfo">
@@ -1929,6 +1964,14 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">window</string>
 								<string key="candidateClassName">NSWindow</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">zoomInToolbarItem</string>
+								<string key="candidateClassName">NSToolbarItem</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">zoomOutToolbarItem</string>
+								<string key="candidateClassName">NSToolbarItem</string>
 							</object>
 						</object>
 					</object>

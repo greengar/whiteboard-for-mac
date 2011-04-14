@@ -59,7 +59,6 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 //KONG: moving local connection 
 @synthesize remoteDevice;
 
-
 + (void)initialize
 {
 	//[[BrushPickerPanel class] poseAsClass:[NSColorPanel class]];
@@ -829,7 +828,19 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 		if ([drawingView.redoImageArray count] <= 0) {
 			enable = NO;
 		}
-	}
+	} else if (theItem == panToolbarItem) {
+        if ([self getMode] == panMode) {
+            enable = NO;
+        }
+    } else if (theItem == zoomInToolbarItem) {
+        if ([self getMode] == zoomInMode) {
+            enable = NO;
+        }
+    } else if (theItem == zoomOutToolbarItem) {
+        if ([self getMode] == zoomOutMode) {
+            enable = NO;
+        }
+    }
 	return enable;
 }
 

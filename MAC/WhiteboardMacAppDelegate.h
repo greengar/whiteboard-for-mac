@@ -66,6 +66,10 @@ typedef enum {
 	
 	IBOutlet NSToolbarItem *undoToolbarItem;
 	IBOutlet NSToolbarItem *redoToolbarItem;
+    
+    IBOutlet NSToolbarItem *panToolbarItem;
+    IBOutlet NSToolbarItem *zoomInToolbarItem;
+    IBOutlet NSToolbarItem *zoomOutToolbarItem;
 	
 	IBOutlet NSToolbarItem *		networkToolbarItem;
 	NSText *			connectedDeviceName;
