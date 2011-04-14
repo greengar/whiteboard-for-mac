@@ -225,7 +225,6 @@ static inline int hexCharsToByteValue(char c1, char c2){
 	
 	[pixelFormat release];
 
-	
 	return self;
 }
 

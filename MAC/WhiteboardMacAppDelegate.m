@@ -803,6 +803,7 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 -(IBAction)pan:(id)sender {
     [self setMode:panMode];
     [[NSCursor panCursor] set];
+    [drawingView addCursorRect:NSMakeRect(0, 0, 1024, 768) cursor:[NSCursor panCursor]];
 }
 
 -(IBAction)zoomIn:(id)sender {
