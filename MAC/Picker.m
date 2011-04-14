@@ -94,8 +94,8 @@ static Picker *sharedPicker = nil;
 						[[GSTab alloc] initWithType:MarkerTab pointSize:kDefaultPointSize opacity:kDefaultOpacityValue color:OPAQUE_HEXCOLOR(0xFFC0CB)], // pink
 						[[GSTab alloc] initWithType:MarkerTab pointSize:kDefaultPointSize opacity:kDefaultOpacityValue color:OPAQUE_HEXCOLOR(0xA52A2A)], // brown
 						[[GSTab alloc] initEraserWithPointSize:17], //WithType:EraserTab
-						[[GSTab alloc] initZoom],
-						[[GSTab alloc] initPan],
+//						[[GSTab alloc] initZoom],
+//						[[GSTab alloc] initPan],
 //						[[GSTab alloc] initWithType:MarkerTab pointSize:kDefaultPointSize opacity:0.995 color:OPAQUE_HEXCOLOR(0xBEBEBE)], // grey
 //						hideShowButtonTab,
 //						[[GSTab alloc] initWithType:MarkerTab pointSize:kDefaultPointSize opacity:0.995 color:OPAQUE_HEXCOLOR(0xCCCCCC)], // light grey

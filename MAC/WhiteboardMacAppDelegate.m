@@ -11,6 +11,7 @@
 #import "BrushPickerPanel.h"
 #import "Picker.h"
 #import "NSImage+Transform.h"
+#import "NSCursor+CustomCursors.h"
 
 BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 
@@ -797,6 +798,21 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 
 -(IBAction)redo:(id)sender {
 	[drawingView redoStroke];
+}
+
+-(IBAction)pan:(id)sender {
+    [self setMode:panMode];
+    [[NSCursor panCursor] set];
+}
+
+-(IBAction)zoomIn:(id)sender {
+    [self setMode:zoomMode];
+    [[NSCursor zoomInCursor] set];
+}
+
+-(IBAction)zoomOut:(id)sender {
+    [self setMode:zoomMode];
+    [[NSCursor zoomOutCursor] set];
 }
 
 // this method follows Apple's recommended pattern (see Apple documentation)

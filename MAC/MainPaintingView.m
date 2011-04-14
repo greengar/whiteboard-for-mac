@@ -9,6 +9,7 @@
 #import "MainPaintingView.h"
 #import "GSTouchData.h"
 #import "WhiteboardMacAppDelegate.h"
+#import "NSCursor+CustomCursors.h"
 
 #define kUndoMaxBuffer 10
 
@@ -86,12 +87,12 @@ GLint gDollyPanStartPoint[2] = {0, 0};
 	}
 	else if ([theEvent modifierFlags] & NSAlternateKeyMask) { // send to dolly
 		// Temporary use arrow Cursor
-		[[NSCursor arrowCursor] set];
+		//[[NSCursor arrowCursor] set];
 		[self otherMouseDown:theEvent];
 	}
 	else {
 		// Temporary use arrow Cursor
-		[[NSCursor arrowCursor] set];
+		//[[NSCursor arrowCursor] set];
 		gDolly = GL_FALSE; // no dolly
 		gPan = GL_FALSE; // no pan
 		
@@ -368,7 +369,7 @@ GLint gDollyPanStartPoint[2] = {0, 0};
 - (void)mouseUp:(NSEvent *)theEvent {
 	
 	// Back to arrow Cursor
-	[[NSCursor arrowCursor] set];
+	//[[NSCursor arrowCursor] set];
 
     // determine if I handle theEvent
     // if not...

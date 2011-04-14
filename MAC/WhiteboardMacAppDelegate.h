@@ -174,6 +174,9 @@ typedef enum {
 -(IBAction)undo:(id)sender;
 -(IBAction)redo:(id)sender;
 -(IBAction)startOver:(id)sender;
+-(IBAction)pan:(id)sender;
+-(IBAction)zoomIn:(id)sender;
+-(IBAction)zoomOut:(id)sender;
 
 -(IBAction)flipVertical:(id)sender;
 -(IBAction)brushSelectorReposition:(id)sender;
