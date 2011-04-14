@@ -803,17 +803,19 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 -(IBAction)pan:(id)sender {
     [self setMode:panMode];
     [[NSCursor panCursor] set];
-    [drawingView addCursorRect:NSMakeRect(0, 0, 1024, 768) cursor:[NSCursor panCursor]];
+    [drawingView addCursorRect:NSMakeRect(0, 0, [[self window] frame].size.width, [[self window] frame].size.height) cursor:[NSCursor panCursor]];
 }
 
 -(IBAction)zoomIn:(id)sender {
-    [self setMode:zoomMode];
+    [self setMode:zoomInMode];
     [[NSCursor zoomInCursor] set];
+    [drawingView addCursorRect:NSMakeRect(0, 0, [[self window] frame].size.width, [[self window] frame].size.height) cursor:[NSCursor zoomInCursor]];
 }
 
 -(IBAction)zoomOut:(id)sender {
-    [self setMode:zoomMode];
+    [self setMode:zoomOutMode];
     [[NSCursor zoomOutCursor] set];
+    [drawingView addCursorRect:NSMakeRect(0, 0, [[self window] frame].size.width, [[self window] frame].size.height) cursor:[NSCursor zoomOutCursor]];
 }
 
 // this method follows Apple's recommended pattern (see Apple documentation)

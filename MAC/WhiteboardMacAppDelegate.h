@@ -35,13 +35,14 @@ typedef enum {
 typedef enum {
 	iPhoneDevice = 0,
 	iPodTouchDevice,
-	iPadDevice,
+	iPadDevice
 } GSDevice;
 
 typedef enum {
 	normalMode = 0,
 	panMode,
-	zoomMode,
+	zoomInMode,
+    zoomOutMode
 } ToolType;
 
 @class Picker;
