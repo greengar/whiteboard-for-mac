@@ -16,6 +16,7 @@
 @interface MainPaintingView : PaintingView {
 	NSPoint pointInView;
 	NSPoint pointBeganInView;
+    NSPoint pointStartAutomaticZoom;
 	
 	NSMutableArray * undoImageArray;
 	NSMutableArray * redoImageArray;
@@ -51,6 +52,8 @@
 
 - (void)mouseZoom:(GLfloat)aperture;
 - (void)mouseZoomWithClick:(NSPoint)location;
+- (void)mouseZoomInAutomatic;
+- (void)mouseZoomOutAutomatic;
 
 - (NSPoint)reLocateCenterIfZoomFromOutside:(NSPoint)center;
 

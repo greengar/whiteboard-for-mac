@@ -14,6 +14,7 @@
 #define kUndoMaxBuffer 10
 
 GLint gDollyPanStartPoint[2] = {0, 0};
+GLint zoomAutomaticCountdown = 1;
 
 @implementation MainPaintingView
 
@@ -191,6 +192,30 @@ GLint gDollyPanStartPoint[2] = {0, 0};
     [self setNeedsDisplay:YES];
 }
 
+- (void)mouseZoomInAutomatic {
+    [self performZoom:(1 + 0.01 * zoomAutomaticCountdown) atCenter:pointStartAutomaticZoom];
+    [self setNeedsDisplay:YES];
+    if (zoomAutomaticCountdown < 10) {
+        zoomAutomaticCountdown++;
+        [self performSelector:@selector(mouseZoomInAutomatic) withObject:nil afterDelay:0.02];
+    }
+    else {
+        zoomAutomaticCountdown = 1;
+    }
+}
+
+- (void)mouseZoomOutAutomatic {
+    [self performZoom:(1 - 0.01 * zoomAutomaticCountdown) atCenter:pointStartAutomaticZoom];
+    [self setNeedsDisplay:YES];
+    if (zoomAutomaticCountdown < 10) {
+        zoomAutomaticCountdown++;
+        [self performSelector:@selector(mouseZoomOutAutomatic) withObject:nil afterDelay:0.02];
+    }
+    else {
+        zoomAutomaticCountdown = 1;
+    }
+}
+
 - (NSPoint) pointWithoutCameraEffect:(NSPoint)original {
     
     NSPoint destination = NSMakePoint(original.x, original.y);
@@ -338,14 +363,12 @@ GLint gDollyPanStartPoint[2] = {0, 0};
     [super mouseUp:theEvent];
 	
     if ([NSAppDelegate getMode] == zoomInMode) {
-        NSPoint locationInView = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-        [self performZoom:1.1 atCenter:locationInView];
-        [self setNeedsDisplay:YES];
+        pointStartAutomaticZoom = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+        [self performSelector:@selector(mouseZoomInAutomatic) withObject:nil afterDelay:0.02];
     }
     else if ([NSAppDelegate getMode] == zoomOutMode) {
-        NSPoint locationInView = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-        [self performZoom:0.9 atCenter:locationInView];
-        [self setNeedsDisplay:YES];
+        pointStartAutomaticZoom = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+        [self performSelector:@selector(mouseZoomOutAutomatic) withObject:nil afterDelay:0.02];
     }
     
     else if ([NSAppDelegate getMode] == panMode) {
@@ -525,9 +548,6 @@ GLint gDollyPanStartPoint[2] = {0, 0};
 {
 	if ([undoImageArray count] <= 1) {
 		DLog(@"can't undo anymore!");
-//		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"You can't undo any more!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//		[alert show];
-//		[alert release];
 		return;
 	}
 	
