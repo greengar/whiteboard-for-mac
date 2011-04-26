@@ -14,7 +14,7 @@
 { 
     static NSCursor *panCursor = nil; 
     if (!panCursor) { 
-        NSImage *pan = [NSImage imageNamed:@"Pan_Icon"]; 
+        NSImage *pan = [NSImage imageNamed:@"Pan_Cursor"]; 
         NSPoint hotspot = NSMakePoint(10.0f, 10.0f); 
         panCursor = [[NSCursor alloc] 
 					   initWithImage:pan hotSpot:hotspot]; 
@@ -38,7 +38,7 @@
 { 
     static NSCursor *zoomInCursor = nil; 
     if (!zoomInCursor) { 
-        NSImage *zoomIn = [NSImage imageNamed:@"Zoom_Icon"]; 
+        NSImage *zoomIn = [NSImage imageNamed:@"ZoomIn_Cursor"]; 
         NSPoint hotspot = NSMakePoint(10.0f, 10.0f); 
         zoomInCursor = [[NSCursor alloc] 
                       initWithImage:zoomIn hotSpot:hotspot]; 
@@ -50,7 +50,7 @@
 { 
     static NSCursor *zoomOutCursor = nil; 
     if (!zoomOutCursor) { 
-        NSImage *zoomOut = [NSImage imageNamed:@"Zoom_Icon"]; 
+        NSImage *zoomOut = [NSImage imageNamed:@"ZoomOut_Cursor"]; 
         NSPoint hotspot = NSMakePoint(10.0f, 10.0f); 
         zoomOutCursor = [[NSCursor alloc] 
                       initWithImage:zoomOut hotSpot:hotspot]; 

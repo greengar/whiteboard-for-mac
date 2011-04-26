@@ -213,6 +213,12 @@
 		CD4B86BD1356DE2C00BACAED /* ZoomOut_ToolBar.png in Resources */ = {isa = PBXBuildFile; fileRef = CD4B86B71356DE2B00BACAED /* ZoomOut_ToolBar.png */; };
 		CD4B86BF1356DEAC00BACAED /* Pan_ToolBar.png in Resources */ = {isa = PBXBuildFile; fileRef = CD4B86BE1356DEAC00BACAED /* Pan_ToolBar.png */; };
 		CD4B86C01356DEAC00BACAED /* Pan_ToolBar.png in Resources */ = {isa = PBXBuildFile; fileRef = CD4B86BE1356DEAC00BACAED /* Pan_ToolBar.png */; };
+		CD81CAA9136661FB00CD68C5 /* Pan_Cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = CD81CAA8136661FB00CD68C5 /* Pan_Cursor.png */; };
+		CD81CAAA136661FB00CD68C5 /* Pan_Cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = CD81CAA8136661FB00CD68C5 /* Pan_Cursor.png */; };
+		CD81CAAE136664A900CD68C5 /* ZoomIn_Cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = CD81CAAC136664A900CD68C5 /* ZoomIn_Cursor.png */; };
+		CD81CAAF136664A900CD68C5 /* ZoomIn_Cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = CD81CAAC136664A900CD68C5 /* ZoomIn_Cursor.png */; };
+		CD81CAB0136664A900CD68C5 /* ZoomOut_Cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = CD81CAAD136664A900CD68C5 /* ZoomOut_Cursor.png */; };
+		CD81CAB1136664A900CD68C5 /* ZoomOut_Cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = CD81CAAD136664A900CD68C5 /* ZoomOut_Cursor.png */; };
 		FC2B457B12EFEAAC00BB2648 /* GSMacAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = FC2B457A12EFEAAC00BB2648 /* GSMacAlert.m */; };
 		FC2B457D12EFEAD600BB2648 /* GSMacAlert.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC2B457C12EFEAD600BB2648 /* GSMacAlert.xib */; };
 		FCAC86AF12EDD8B400146E6F /* GSAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAC869212EDD8B400146E6F /* GSAlert.m */; };
@@ -412,6 +418,9 @@
 		CD4B86B61356DE2B00BACAED /* ZoomIn_ToolBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ZoomIn_ToolBar.png; sourceTree = "<group>"; };
 		CD4B86B71356DE2B00BACAED /* ZoomOut_ToolBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ZoomOut_ToolBar.png; sourceTree = "<group>"; };
 		CD4B86BE1356DEAC00BACAED /* Pan_ToolBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pan_ToolBar.png; sourceTree = "<group>"; };
+		CD81CAA8136661FB00CD68C5 /* Pan_Cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pan_Cursor.png; sourceTree = "<group>"; };
+		CD81CAAC136664A900CD68C5 /* ZoomIn_Cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ZoomIn_Cursor.png; sourceTree = "<group>"; };
+		CD81CAAD136664A900CD68C5 /* ZoomOut_Cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ZoomOut_Cursor.png; sourceTree = "<group>"; };
 		FC2B457912EFEAAC00BB2648 /* GSMacAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSMacAlert.h; sourceTree = "<group>"; };
 		FC2B457A12EFEAAC00BB2648 /* GSMacAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSMacAlert.m; sourceTree = "<group>"; };
 		FC2B457C12EFEAD600BB2648 /* GSMacAlert.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GSMacAlert.xib; sourceTree = "<group>"; };
@@ -787,6 +796,9 @@
 		69805D1712CC79D300CE878C /* Toolbar */ = {
 			isa = PBXGroup;
 			children = (
+				CD81CAAC136664A900CD68C5 /* ZoomIn_Cursor.png */,
+				CD81CAAD136664A900CD68C5 /* ZoomOut_Cursor.png */,
+				CD81CAA8136661FB00CD68C5 /* Pan_Cursor.png */,
 				CD4B86BE1356DEAC00BACAED /* Pan_ToolBar.png */,
 				CD4B86B61356DE2B00BACAED /* ZoomIn_ToolBar.png */,
 				CD4B86B71356DE2B00BACAED /* ZoomOut_ToolBar.png */,
@@ -990,6 +1002,9 @@
 				CD4B86BB1356DE2C00BACAED /* ZoomIn_ToolBar.png in Resources */,
 				CD4B86BD1356DE2C00BACAED /* ZoomOut_ToolBar.png in Resources */,
 				CD4B86C01356DEAC00BACAED /* Pan_ToolBar.png in Resources */,
+				CD81CAAA136661FB00CD68C5 /* Pan_Cursor.png in Resources */,
+				CD81CAAF136664A900CD68C5 /* ZoomIn_Cursor.png in Resources */,
+				CD81CAB1136664A900CD68C5 /* ZoomOut_Cursor.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1042,6 +1057,9 @@
 				CD4B86BA1356DE2C00BACAED /* ZoomIn_ToolBar.png in Resources */,
 				CD4B86BC1356DE2C00BACAED /* ZoomOut_ToolBar.png in Resources */,
 				CD4B86BF1356DEAC00BACAED /* Pan_ToolBar.png in Resources */,
+				CD81CAA9136661FB00CD68C5 /* Pan_Cursor.png in Resources */,
+				CD81CAAE136664A900CD68C5 /* ZoomIn_Cursor.png in Resources */,
+				CD81CAB0136664A900CD68C5 /* ZoomOut_Cursor.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
