@@ -55,6 +55,11 @@
 - (void)mouseZoomInAutomatic;
 - (void)mouseZoomOutAutomatic;
 
+- (void)zoomInAfterToolBarClick;
+- (void)zoomOutAfterToolBarClick;
+- (BOOL)zoomInable;
+- (BOOL)zoomOutable;
+
 - (NSPoint)reLocateCenterIfZoomFromOutside:(NSPoint)center;
 
 - (void)performZoom:(GLfloat)ratio atCenter:(NSPoint)center;

@@ -204,6 +204,24 @@ GLint zoomAutomaticCountdown = 1;
     }
 }
 
+- (void)zoomInAfterToolBarClick {
+    pointStartAutomaticZoom = NSMakePoint(kScreenWidth/2, kScreenHeight/2);
+    [self performSelector:@selector(mouseZoomInAutomatic) withObject:nil afterDelay:0.02];
+}
+
+- (BOOL)zoomInable {
+    return (camera.aperture > 4.9);
+}
+
+- (void)zoomOutAfterToolBarClick {
+    pointStartAutomaticZoom = NSMakePoint(kScreenWidth/2, kScreenHeight/2);
+    [self performSelector:@selector(mouseZoomOutAutomatic) withObject:nil afterDelay:0.02];
+}
+
+- (BOOL)zoomOutable {
+    return (camera.aperture < 0.2);
+}
+
 - (void)mouseZoomOutAutomatic {
     [self performZoom:(1 - 0.01 * zoomAutomaticCountdown) atCenter:pointStartAutomaticZoom];
     [self setNeedsDisplay:YES];

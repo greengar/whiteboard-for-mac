@@ -809,12 +809,14 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
     [self setMode:zoomInMode];
     [[NSCursor zoomInCursor] set];
     [drawingView addCursorRect:NSMakeRect(0, 0, [[self window] frame].size.width, [[self window] frame].size.height) cursor:[NSCursor zoomInCursor]];
+    [drawingView zoomInAfterToolBarClick];
 }
 
 -(IBAction)zoomOut:(id)sender {
     [self setMode:zoomOutMode];
     [[NSCursor zoomOutCursor] set];
     [drawingView addCursorRect:NSMakeRect(0, 0, [[self window] frame].size.width, [[self window] frame].size.height) cursor:[NSCursor zoomOutCursor]];
+    [drawingView zoomOutAfterToolBarClick];
 }
 
 // this method follows Apple's recommended pattern (see Apple documentation)
@@ -833,11 +835,11 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
             enable = NO;
         }
     } else if (theItem == zoomInToolbarItem) {
-        if ([self getMode] == zoomInMode) {
+        if ([self getMode] == zoomInMode && [drawingView zoomInable]) {
             enable = NO;
         }
     } else if (theItem == zoomOutToolbarItem) {
-        if ([self getMode] == zoomOutMode) {
+        if ([self getMode] == zoomOutMode && [drawingView zoomOutable]) {
             enable = NO;
         }
     }
