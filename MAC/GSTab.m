@@ -44,6 +44,8 @@ static CGColorRef CGColorCreateFromNSColor (NSColor *color_)
 	return [self initWithType:EraserTab pointSize:w opacity:1.0 color:nil]; // color is set in -setSelected
 }
 
+/*
+ * Hector: Remove Pan and Zoom on Picker
 - (id)initPan {
 	return [self initWithType:PanTab pointSize:0 opacity:0.0 color:nil];
 }
@@ -51,6 +53,7 @@ static CGColorRef CGColorCreateFromNSColor (NSColor *color_)
 - (id)initZoom {
 	return [self initWithType:ZoomTab pointSize:0 opacity:0.0 color:nil];
 }
+ */
 
 - (id)initWithType:(TabType)t pointSize:(float)w opacity:(float)o color:(NSColor *)c {
 	if ((self = [super init])) {
@@ -140,7 +143,10 @@ static CGColorRef CGColorCreateFromNSColor (NSColor *color_)
 			[imageView addSubview:imgView];
 		}
 		return imageView;
-	} else if (type == PanTab) {
+	}
+    /*
+     * Hector: Remove Pan and Zoom on Picker
+    else if (type == PanTab) {
 		if (!imageView) {
 			imageView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 76, 76)];
 			
@@ -163,6 +169,7 @@ static CGColorRef CGColorCreateFromNSColor (NSColor *color_)
 		}
 		return imageView;
 	}
+     */
 	return nil;
 }
 
@@ -190,13 +197,18 @@ static CGColorRef CGColorCreateFromNSColor (NSColor *color_)
 			
 			[NSAppDelegate changePointSize:pointSize]; // also sends opacity
 			
-		} else if (type == PanTab) {
+		} 
+        /*
+         * Hector: Remove Pan and Zoom on Picker
+        else if (type == PanTab) {
 			// Enable Pan Mode
 			[NSAppDelegate setMode:panMode];
 		} else if (type == ZoomTab) {
 			// Enable Zoom Mode
-			[NSAppDelegate setMode:zoomMode];
-		} else {
+			[NSAppDelegate setMode:zoomInMode];
+		}
+        */
+        else {
 			DLog(@"WARNING: Unsupported tab type");
 		}
 		[[Picker sharedPicker] displayTabType:type]; // important!

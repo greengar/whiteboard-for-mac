@@ -61,7 +61,7 @@
 
 - (id)initWithDictionary:(NSDictionary *)dictionary
 {
-    if (self = [super init])
+    if ((self = [super init]))
     {
         [self populateWithDictionary:dictionary];
     }

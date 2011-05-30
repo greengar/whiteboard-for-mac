@@ -35,13 +35,14 @@ typedef enum {
 typedef enum {
 	iPhoneDevice = 0,
 	iPodTouchDevice,
-	iPadDevice,
+	iPadDevice
 } GSDevice;
 
 typedef enum {
 	normalMode = 0,
 	panMode,
-	zoomMode,
+	zoomInMode,
+    zoomOutMode
 } ToolType;
 
 @class Picker;
@@ -65,6 +66,10 @@ typedef enum {
 	
 	IBOutlet NSToolbarItem *undoToolbarItem;
 	IBOutlet NSToolbarItem *redoToolbarItem;
+    
+    IBOutlet NSToolbarItem *panToolbarItem;
+    IBOutlet NSToolbarItem *zoomInToolbarItem;
+    IBOutlet NSToolbarItem *zoomOutToolbarItem;
 	
 	IBOutlet NSToolbarItem *		networkToolbarItem;
 	NSText *			connectedDeviceName;
@@ -174,6 +179,9 @@ typedef enum {
 -(IBAction)undo:(id)sender;
 -(IBAction)redo:(id)sender;
 -(IBAction)startOver:(id)sender;
+-(IBAction)pan:(id)sender;
+-(IBAction)zoomIn:(id)sender;
+-(IBAction)zoomOut:(id)sender;
 
 -(IBAction)flipVertical:(id)sender;
 -(IBAction)brushSelectorReposition:(id)sender;

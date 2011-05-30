@@ -225,7 +225,6 @@ static inline int hexCharsToByteValue(char c1, char c2){
 	
 	[pixelFormat release];
 
-	
 	return self;
 }
 
@@ -369,7 +368,7 @@ static inline int hexCharsToByteValue(char c1, char c2){
 
 
 -(void)drawRect:(NSRect)rect {
-	
+	DLog();
 //	DLog(@"%@", NSStringFromRect(rect));
 //	{{0, 0}, {1024, 768}}
 //	{{0, 0}, {1177, 802}}
@@ -430,7 +429,7 @@ static inline int hexCharsToByteValue(char c1, char c2){
 	glTexCoordPointer(2, GL_FLOAT, 0, textureCoord);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 	
-	glTranslatef(camera.viewPos.x-2, -camera.viewPos.y - 2, 0);
+	glTranslatef(camera.viewPos.x-2, camera.viewPos.y-2, 0);
 	glScalef(camera.aperture, camera.aperture, 1.0);
 	glBindTexture( GL_TEXTURE_2D, borderTextureId );
 	glColor4f(1.0f,1.0f, 1.0f, 1.0f);
@@ -439,7 +438,7 @@ static inline int hexCharsToByteValue(char c1, char c2){
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 	
 	glLoadIdentity(); 
-	glTranslatef(camera.viewPos.x, -camera.viewPos.y, 0);
+	glTranslatef(camera.viewPos.x, camera.viewPos.y, 0);
 	glScalef(camera.aperture, camera.aperture, 1.0);
 	
 	glBindTexture( GL_TEXTURE_2D, screenTextureId );

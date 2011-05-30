@@ -11,6 +11,7 @@
 #import "BrushPickerPanel.h"
 #import "Picker.h"
 #import "NSImage+Transform.h"
+#import "NSCursor+CustomCursors.h"
 
 BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 
@@ -57,7 +58,6 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 @synthesize connection = _connection;
 //KONG: moving local connection 
 @synthesize remoteDevice;
-
 
 + (void)initialize
 {
@@ -799,6 +799,26 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	[drawingView redoStroke];
 }
 
+-(IBAction)pan:(id)sender {
+    [self setMode:panMode];
+    [[NSCursor panCursor] set];
+    [drawingView addCursorRect:NSMakeRect(0, 0, [[self window] frame].size.width, [[self window] frame].size.height) cursor:[NSCursor panCursor]];
+}
+
+-(IBAction)zoomIn:(id)sender {
+    [self setMode:zoomInMode];
+    [[NSCursor zoomInCursor] set];
+    [drawingView addCursorRect:NSMakeRect(0, 0, [[self window] frame].size.width, [[self window] frame].size.height) cursor:[NSCursor zoomInCursor]];
+    [drawingView zoomInAfterToolBarClick];
+}
+
+-(IBAction)zoomOut:(id)sender {
+    [self setMode:zoomOutMode];
+    [[NSCursor zoomOutCursor] set];
+    [drawingView addCursorRect:NSMakeRect(0, 0, [[self window] frame].size.width, [[self window] frame].size.height) cursor:[NSCursor zoomOutCursor]];
+    [drawingView zoomOutAfterToolBarClick];
+}
+
 // this method follows Apple's recommended pattern (see Apple documentation)
 - (BOOL)validateToolbarItem:(NSToolbarItem *)theItem {
 	BOOL enable = YES; // default state, applies to most items
@@ -810,7 +830,19 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 		if ([drawingView.redoImageArray count] <= 0) {
 			enable = NO;
 		}
-	}
+	} else if (theItem == panToolbarItem) {
+        if ([self getMode] == panMode) {
+            enable = NO;
+        }
+    } else if (theItem == zoomInToolbarItem) {
+        if ([self getMode] == zoomInMode && [drawingView zoomInable]) {
+            enable = NO;
+        }
+    } else if (theItem == zoomOutToolbarItem) {
+        if ([self getMode] == zoomOutMode && [drawingView zoomOutable]) {
+            enable = NO;
+        }
+    }
 	return enable;
 }
 

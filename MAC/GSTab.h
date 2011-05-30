@@ -34,8 +34,13 @@
 @property(nonatomic) int drawingToolMode;
 
 - (id)initEraserWithPointSize:(float)w;
+
+/*
+ * Hector: Remove Pan and Zoom on Picker
 - (id)initPan;
 - (id)initZoom;
+ */
+
 - (id)initWithType:(TabType)t pointSize:(float)w opacity:(float)o color:(NSColor *)c;
 
 - (void)setSelected;

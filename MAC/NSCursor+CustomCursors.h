@@ -12,5 +12,7 @@
 
 + (NSCursor *)panCursor; 
 + (NSCursor *)zoomCursor;
++ (NSCursor *)zoomInCursor;
++ (NSCursor *)zoomOutCursor;
 
 @end 

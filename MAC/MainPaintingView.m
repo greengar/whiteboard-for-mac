@@ -9,13 +9,12 @@
 #import "MainPaintingView.h"
 #import "GSTouchData.h"
 #import "WhiteboardMacAppDelegate.h"
+#import "NSCursor+CustomCursors.h"
 
 #define kUndoMaxBuffer 10
 
-
-GLboolean gDolly = GL_FALSE;
-GLboolean gPan = GL_FALSE;
 GLint gDollyPanStartPoint[2] = {0, 0};
+GLint zoomAutomaticCountdown = 1;
 
 @implementation MainPaintingView
 
@@ -52,6 +51,7 @@ GLint gDollyPanStartPoint[2] = {0, 0};
 		isEndOfDrawingLine = FALSE;
 		
 		isBeing180Rotated = FALSE;
+    
 	}
 	return self;
 }
@@ -68,22 +68,19 @@ GLint gDollyPanStartPoint[2] = {0, 0};
     [super mouseDown:theEvent];
 	
 	// Release redo stack
-	if ([redoImageArray count] >= 0) {
+	if ([redoImageArray count] > 0) {
 		[self releaseRedoStack];
 	}
 	
-	if ([theEvent modifierFlags] & NSControlKeyMask || [NSAppDelegate getMode] == panMode) { // send to pan
+	if (([theEvent modifierFlags] & NSControlKeyMask) || ([NSAppDelegate getMode] == panMode)) {
 		// Change to pan Cursor
 		[[NSCursor panCursor] set];
 		[self rightMouseDown:theEvent];
 	}
-	else if ([NSAppDelegate getMode] == zoomMode) {
-		// Change to zoom Cursor
-		[[NSCursor zoomCursor] set];
-		pointInView = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-		
+	else if (([NSAppDelegate getMode] == zoomInMode) || ([NSAppDelegate getMode] == zoomOutMode)) {
+        // Hector: do nothing
 	}
-	else if ([theEvent modifierFlags] & NSAlternateKeyMask) { // send to dolly
+	else if ([theEvent modifierFlags] & NSAlternateKeyMask) {
 		// Temporary use arrow Cursor
 		[[NSCursor arrowCursor] set];
 		[self otherMouseDown:theEvent];
@@ -91,122 +88,249 @@ GLint gDollyPanStartPoint[2] = {0, 0};
 	else {
 		// Temporary use arrow Cursor
 		[[NSCursor arrowCursor] set];
-		gDolly = GL_FALSE; // no dolly
-		gPan = GL_FALSE; // no pan
 		
 		pointInView = [self convertPoint:[theEvent locationInWindow] fromView:nil];
 		pointBeganInView = [self convertPoint:[theEvent locationInWindow] fromView:nil];		
 
 		pointInView.x += -camera.viewPos.x;
-		pointInView.y += camera.viewPos.y;
+		pointInView.y += -camera.viewPos.y;
 		pointInView.x /= camera.aperture;
 		pointInView.y /= camera.aperture;
 		
 		pointBeganInView.x += -camera.viewPos.x;
-		pointBeganInView.y += camera.viewPos.y;
+		pointBeganInView.y += -camera.viewPos.y;
 		pointBeganInView.x /= camera.aperture;
 		pointBeganInView.y /= camera.aperture;
 		
 		isDrawingStroke = TRUE;
+        
 		[AppDelegate sendBeginStroke];
 	}
 	
 }
 
-// ---------------------------------
-
-- (void)rightMouseDown:(NSEvent *)theEvent // pan
+- (void)rightMouseDown:(NSEvent *)theEvent
 {
 	NSPoint location = [self convertPoint:[theEvent locationInWindow] fromView:nil];
 	camera.viewHeight = 768;
 	location.y = camera.viewHeight - location.y;
-	gDolly = GL_FALSE; // no dolly
-	gPan = GL_TRUE; 
 	gDollyPanStartPoint[0] = location.x;
 	gDollyPanStartPoint[1] = location.y;
 }
 
-/*
-- (void)mouseMoved: (NSEvent *)theEvent {
-	DLog(@"mouseMoved working");
-	[super mouseMoved:theEvent];
-}*/
-
-- (void)scrollWheel:(NSEvent *)theEvent
-{
+- (void)scrollWheel:(NSEvent *)theEvent {
     float wheelDelta = [theEvent deltaX] + [theEvent deltaY] + [theEvent deltaZ];
-    if (wheelDelta)
-    {
+    if (wheelDelta) {
 		GLfloat deltaAperture = 0;
+
 		if (fabs([theEvent deltaX]) >= fabs([theEvent deltaY])) {
 			deltaAperture = wheelDelta * -camera.aperture / 200.0f;
 		}
 		else {
 			deltaAperture = wheelDelta * camera.aperture / 200.0f;
 		}
-        camera.aperture += deltaAperture;
-        if (camera.aperture < 0.2) // do not let aperture <= 0.2
-            camera.aperture = 0.2;
-        if (camera.aperture > 4.9) // do not let aperture >= 5.0
-            camera.aperture = 4.9;
-        //[self updateProjection]; // update projection matrix
-        [self setNeedsDisplay: YES];
+        
+        GLfloat ratio = 1 + deltaAperture;
+        NSPoint locationInView = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+        
+        [self performZoom:ratio atCenter:locationInView];
+        
+        [self setNeedsDisplay:YES];
+        
     }
 }
 
-- (void)performZoom: (NSPoint) location {
-	float wheelDelta = pointInView.x - location.x + pointInView.y - location.y;
+- (NSPoint) reLocateCenterIfZoomFromOutside:(NSPoint)center {
+    
+    NSPoint locationInWindow = NSMakePoint(center.x, center.y);
+    
+    NSPoint locationInDrawing = NSMakePoint(locationInWindow.x - camera.viewPos.x, locationInWindow.y - camera.viewPos.y);
+    
+    if(locationInDrawing.x < 0 || locationInDrawing.x > kScreenWidth * camera.aperture || locationInDrawing.y < 0 || locationInDrawing.y > kScreenHeight * camera.aperture) {
+        
+        return [self pointWithCameraEffect:NSMakePoint(kScreenWidth/2, kScreenHeight/2)];
+    }
+    
+    return locationInWindow;
+}
+
+- (void)performZoom:(GLfloat)ratio atCenter:(NSPoint)center {
+    
+    if ((camera.aperture <= 0.2 && ratio <= 1.0) || (camera.aperture >= 4.9 && ratio >= 1.0))
+        ratio = 1.0;
+    
+    NSPoint locationInWindow = [self reLocateCenterIfZoomFromOutside:NSMakePoint(center.x, center.y)];
+    
+    NSPoint locationInDrawing = [self pointWithoutCameraEffect:locationInWindow];
+        
+    NSPoint locationInTexture = [self pointToTexture:locationInDrawing];
+    
+    NSPoint destinationInTexture = [self pointAfterZoomAtCenter:locationInTexture withRatio:ratio];
+    
+    NSPoint destinationInDrawing = [self pointFromTexture:destinationInTexture];
+    
+    NSPoint destinationInWindow = [self pointWithCameraEffect:destinationInDrawing];
+    
+    NSPoint panBack = NSMakePoint(locationInWindow.x - destinationInWindow.x, locationInWindow.y - destinationInWindow.y);
+    
+    [self mousePanWithVector:panBack];
+    
+    [self mouseZoom:ratio];
+    
+}
+
+- (void)mouseZoomWithClick:(NSPoint)location {
+    
+	float wheelDelta = (pointInView.x - location.x + pointInView.y - location.y) / 10;
+    
 	GLfloat deltaAperture = wheelDelta * -camera.aperture / 200.0f;
-	camera.aperture += deltaAperture;
-	if (camera.aperture < 0.2) // do not let aperture <= 0.2
-		camera.aperture = 0.2;
-	if (camera.aperture > 4.9) // do not let aperture >= 5.0
-		camera.aperture = 4.9;
-	[self setNeedsDisplay: YES];
+    
+    GLfloat ratio = 1 + deltaAperture;
+    
+    [self performZoom:ratio atCenter:location];
+    
+    [self setNeedsDisplay:YES];
+}
+
+- (void)mouseZoomInAutomatic {
+    [self performZoom:(1 + 0.01 * zoomAutomaticCountdown) atCenter:pointStartAutomaticZoom];
+    [self setNeedsDisplay:YES];
+    if (zoomAutomaticCountdown < 10) {
+        zoomAutomaticCountdown++;
+        [self performSelector:@selector(mouseZoomInAutomatic) withObject:nil afterDelay:0.02];
+    }
+    else {
+        zoomAutomaticCountdown = 1;
+    }
+}
+
+- (void)zoomInAfterToolBarClick {
+    pointStartAutomaticZoom = NSMakePoint(kScreenWidth/2, kScreenHeight/2);
+    [self performSelector:@selector(mouseZoomInAutomatic) withObject:nil afterDelay:0.02];
+}
+
+- (BOOL)zoomInable {
+    return (camera.aperture > 4.9);
+}
+
+- (void)zoomOutAfterToolBarClick {
+    pointStartAutomaticZoom = NSMakePoint(kScreenWidth/2, kScreenHeight/2);
+    [self performSelector:@selector(mouseZoomOutAutomatic) withObject:nil afterDelay:0.02];
+}
+
+- (BOOL)zoomOutable {
+    return (camera.aperture < 0.2);
+}
+
+- (void)mouseZoomOutAutomatic {
+    [self performZoom:(1 - 0.01 * zoomAutomaticCountdown) atCenter:pointStartAutomaticZoom];
+    [self setNeedsDisplay:YES];
+    if (zoomAutomaticCountdown < 10) {
+        zoomAutomaticCountdown++;
+        [self performSelector:@selector(mouseZoomOutAutomatic) withObject:nil afterDelay:0.02];
+    }
+    else {
+        zoomAutomaticCountdown = 1;
+    }
+}
+
+- (NSPoint) pointWithoutCameraEffect:(NSPoint)original {
+    
+    NSPoint destination = NSMakePoint(original.x, original.y);
+    
+    destination.x -= camera.viewPos.x;
+    destination.y -= camera.viewPos.y;
+    
+    destination.x /= camera.aperture;
+    destination.y /= camera.aperture;
+    
+    return destination;
+}
+
+- (NSPoint) pointWithCameraEffect:(NSPoint)original {
+    
+    NSPoint destination = NSMakePoint(original.x, original.y);
+    
+    destination.x *= camera.aperture;
+    destination.y *= camera.aperture;
+    
+    destination.x += camera.viewPos.x;
+    destination.y += camera.viewPos.y;
+    
+    return destination;
+
+}
+
+- (NSPoint) pointToTexture:(NSPoint)original {
+    
+    NSPoint destination = NSMakePoint(kScreenHeight - original.y, original.x);
+    
+    return destination;
+}
+
+- (NSPoint) pointFromTexture:(NSPoint)original {
+    
+    NSPoint destination = NSMakePoint(original.y, kScreenHeight - original.x);
+    
+    return destination;
+}
+
+- (NSPoint) pointAfterZoomAtCenter:(NSPoint)original withRatio:(GLfloat)ratio {
+    
+    NSPoint destination = NSMakePoint(original.x, original.y);
+    
+    destination.x -= kScreenHeight;
+    
+    destination.x *= ratio;
+    destination.y *= ratio;
+    
+    destination.x += kScreenHeight;
+    
+    return destination;
+}
+
+- (void)mousePanWithVector: (NSPoint) location {
+	camera.viewPos.x += location.x;
+	camera.viewPos.y += location.y;	
 }
 
 // move camera in x/y plane
-- (void)mousePan: (NSPoint) location
-{
-	GLfloat panX = (gDollyPanStartPoint[0] - location.x) ;/// (1024.0f / -camera.viewPos.z);
-	GLfloat panY = (gDollyPanStartPoint[1] - location.y) ;/// (768.0f / -camera.viewPos.z);
+- (void)mousePan: (NSPoint) location {
+    GLfloat panX = (gDollyPanStartPoint[0] - location.x) ;/// (1024.0f / -camera.viewPos.z);
+    GLfloat panY = (gDollyPanStartPoint[1] - location.y) ;/// (768.0f / -camera.viewPos.z);
 	camera.viewPos.x -= panX;
-	camera.viewPos.y -= panY;
-	gDollyPanStartPoint[0] = location.x;
-	gDollyPanStartPoint[1] = location.y;
-	
+	camera.viewPos.y += panY;
+    gDollyPanStartPoint[0] = location.x;
+    gDollyPanStartPoint[1] = location.y;
+}
+
+- (void)mouseZoom:(GLfloat)aperture {
+    camera.aperture *= aperture;
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent {
-	//DLog(@"dragged");
-    // determine if I handle theEvent
-    // if not...
     [super mouseDragged:theEvent];
 	
 	// Release redo stack
-	if ([redoImageArray count] >= 0) {
+	if ([redoImageArray count] > 0) {
 		[self releaseRedoStack];
 	}
 	
-	if (gDolly) {
-//		[self mouseDolly: location];
-//		[self updateProjection];  // update projection matrix (not normally done on draw)
-//		[self setNeedsDisplay: YES];
-	} else if (gPan) {
-		NSPoint location = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-		location.y = camera.viewHeight - location.y;
-		[self mousePan: location];
+    if (([theEvent modifierFlags] & NSControlKeyMask) || ([NSAppDelegate getMode] == panMode)) {
+        NSPoint locationInView = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+		locationInView.y = camera.viewHeight - locationInView.y;
+		[self mousePan:locationInView];
 		[self setNeedsDisplay: YES];
-	} else if ([NSAppDelegate getMode] == zoomMode) {
-		[self scrollWheel:theEvent];
-		NSPoint location = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-		[self performZoom:location];
-	} else {
+	}
+    else if (([NSAppDelegate getMode] == zoomInMode) || ([NSAppDelegate getMode] == zoomOutMode)) {
+        // Hector: do nothing
+	}
+    else {
 		
 		NSPoint locationInView = [self convertPoint:[theEvent locationInWindow]	fromView:nil];
 		
 		locationInView.x += -camera.viewPos.x;
-		locationInView.y += camera.viewPos.y;
+		locationInView.y += -camera.viewPos.y;
 		locationInView.x /= camera.aperture;
 		locationInView.y /= camera.aperture;
 		
@@ -223,8 +347,6 @@ GLint gDollyPanStartPoint[2] = {0, 0};
 		
 		trueColorAndOpacity[3] = 1.0 - powf(1.0 - trueColorAndOpacity[3], 1.0 / (2.0 * [AppDelegate getPointSize]));
 		glColor4f(trueColorAndOpacity[0], trueColorAndOpacity[1], trueColorAndOpacity[2], trueColorAndOpacity[3]);
-		
-		//	DLog(@"%f", trueColorAndOpacity[3]);
 		
 		[AppDelegate setTrueColorAndOpacity:trueColorAndOpacity];
 		
@@ -256,27 +378,27 @@ GLint gDollyPanStartPoint[2] = {0, 0};
 }
 
 - (void)mouseUp:(NSEvent *)theEvent {
-	
-	// Back to arrow Cursor
-	[[NSCursor arrowCursor] set];
-
-    // determine if I handle theEvent
-    // if not...
     [super mouseUp:theEvent];
 	
-	if (gDolly) { // end dolly
-		gDolly = GL_FALSE;
-	} else if (gPan) { // end pan
-		gPan = GL_FALSE;
-		
+    if ([NSAppDelegate getMode] == zoomInMode) {
+        pointStartAutomaticZoom = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+        [self performSelector:@selector(mouseZoomInAutomatic) withObject:nil afterDelay:0.02];
+    }
+    else if ([NSAppDelegate getMode] == zoomOutMode) {
+        pointStartAutomaticZoom = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+        [self performSelector:@selector(mouseZoomOutAutomatic) withObject:nil afterDelay:0.02];
+    }
+    
+    else if ([NSAppDelegate getMode] == panMode) {
 		[super reshape];
 
 	} else {
-		
+		[[NSCursor arrowCursor] set];
+        
 		NSPoint locationInView = [self convertPoint:[theEvent locationInWindow]	fromView:nil];
 		
 		locationInView.x += -camera.viewPos.x;
-		locationInView.y += camera.viewPos.y;
+		locationInView.y += -camera.viewPos.y;
 		locationInView.x /= camera.aperture;
 		locationInView.y /= camera.aperture;
 		
@@ -444,9 +566,6 @@ GLint gDollyPanStartPoint[2] = {0, 0};
 {
 	if ([undoImageArray count] <= 1) {
 		DLog(@"can't undo anymore!");
-//		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"You can't undo any more!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//		[alert show];
-//		[alert release];
 		return;
 	}
 	

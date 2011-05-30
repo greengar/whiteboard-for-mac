@@ -207,6 +207,18 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		CD4B86BA1356DE2C00BACAED /* ZoomIn_ToolBar.png in Resources */ = {isa = PBXBuildFile; fileRef = CD4B86B61356DE2B00BACAED /* ZoomIn_ToolBar.png */; };
+		CD4B86BB1356DE2C00BACAED /* ZoomIn_ToolBar.png in Resources */ = {isa = PBXBuildFile; fileRef = CD4B86B61356DE2B00BACAED /* ZoomIn_ToolBar.png */; };
+		CD4B86BC1356DE2C00BACAED /* ZoomOut_ToolBar.png in Resources */ = {isa = PBXBuildFile; fileRef = CD4B86B71356DE2B00BACAED /* ZoomOut_ToolBar.png */; };
+		CD4B86BD1356DE2C00BACAED /* ZoomOut_ToolBar.png in Resources */ = {isa = PBXBuildFile; fileRef = CD4B86B71356DE2B00BACAED /* ZoomOut_ToolBar.png */; };
+		CD4B86BF1356DEAC00BACAED /* Pan_ToolBar.png in Resources */ = {isa = PBXBuildFile; fileRef = CD4B86BE1356DEAC00BACAED /* Pan_ToolBar.png */; };
+		CD4B86C01356DEAC00BACAED /* Pan_ToolBar.png in Resources */ = {isa = PBXBuildFile; fileRef = CD4B86BE1356DEAC00BACAED /* Pan_ToolBar.png */; };
+		CD81CAA9136661FB00CD68C5 /* Pan_Cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = CD81CAA8136661FB00CD68C5 /* Pan_Cursor.png */; };
+		CD81CAAA136661FB00CD68C5 /* Pan_Cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = CD81CAA8136661FB00CD68C5 /* Pan_Cursor.png */; };
+		CD81CAAE136664A900CD68C5 /* ZoomIn_Cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = CD81CAAC136664A900CD68C5 /* ZoomIn_Cursor.png */; };
+		CD81CAAF136664A900CD68C5 /* ZoomIn_Cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = CD81CAAC136664A900CD68C5 /* ZoomIn_Cursor.png */; };
+		CD81CAB0136664A900CD68C5 /* ZoomOut_Cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = CD81CAAD136664A900CD68C5 /* ZoomOut_Cursor.png */; };
+		CD81CAB1136664A900CD68C5 /* ZoomOut_Cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = CD81CAAD136664A900CD68C5 /* ZoomOut_Cursor.png */; };
 		FC2B457B12EFEAAC00BB2648 /* GSMacAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = FC2B457A12EFEAAC00BB2648 /* GSMacAlert.m */; };
 		FC2B457D12EFEAD600BB2648 /* GSMacAlert.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC2B457C12EFEAD600BB2648 /* GSMacAlert.xib */; };
 		FCAC86AF12EDD8B400146E6F /* GSAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAC869212EDD8B400146E6F /* GSAlert.m */; };
@@ -403,6 +415,12 @@
 		69B5207312F2976F002C5D1D /* WhiteboardPro-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WhiteboardPro-Info.plist"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Whiteboard-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Whiteboard-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* WhiteboardMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhiteboardMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD4B86B61356DE2B00BACAED /* ZoomIn_ToolBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ZoomIn_ToolBar.png; sourceTree = "<group>"; };
+		CD4B86B71356DE2B00BACAED /* ZoomOut_ToolBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ZoomOut_ToolBar.png; sourceTree = "<group>"; };
+		CD4B86BE1356DEAC00BACAED /* Pan_ToolBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pan_ToolBar.png; sourceTree = "<group>"; };
+		CD81CAA8136661FB00CD68C5 /* Pan_Cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pan_Cursor.png; sourceTree = "<group>"; };
+		CD81CAAC136664A900CD68C5 /* ZoomIn_Cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ZoomIn_Cursor.png; sourceTree = "<group>"; };
+		CD81CAAD136664A900CD68C5 /* ZoomOut_Cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ZoomOut_Cursor.png; sourceTree = "<group>"; };
 		FC2B457912EFEAAC00BB2648 /* GSMacAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSMacAlert.h; sourceTree = "<group>"; };
 		FC2B457A12EFEAAC00BB2648 /* GSMacAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSMacAlert.m; sourceTree = "<group>"; };
 		FC2B457C12EFEAD600BB2648 /* GSMacAlert.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GSMacAlert.xib; sourceTree = "<group>"; };
@@ -778,6 +796,12 @@
 		69805D1712CC79D300CE878C /* Toolbar */ = {
 			isa = PBXGroup;
 			children = (
+				CD81CAAC136664A900CD68C5 /* ZoomIn_Cursor.png */,
+				CD81CAAD136664A900CD68C5 /* ZoomOut_Cursor.png */,
+				CD81CAA8136661FB00CD68C5 /* Pan_Cursor.png */,
+				CD4B86BE1356DEAC00BACAED /* Pan_ToolBar.png */,
+				CD4B86B61356DE2B00BACAED /* ZoomIn_ToolBar.png */,
+				CD4B86B71356DE2B00BACAED /* ZoomOut_ToolBar.png */,
 				69805D1812CC79D300CE878C /* Gnome-Text-X-Preview.icns */,
 				69805D3212CC98A200CE878C /* Gnome-Network-Wireless.icns */,
 				69805D4C12CC9A3A00CE878C /* Gnome-Network-Wireless-Off-64.png */,
@@ -975,6 +999,12 @@
 				69B5202512F2976F002C5D1D /* BSAAdFramework-Info.plist in Resources */,
 				69B5202612F2976F002C5D1D /* MIT-License.rtf in Resources */,
 				62D807C5130D206A00DADBB6 /* Zoom_Icon.png in Resources */,
+				CD4B86BB1356DE2C00BACAED /* ZoomIn_ToolBar.png in Resources */,
+				CD4B86BD1356DE2C00BACAED /* ZoomOut_ToolBar.png in Resources */,
+				CD4B86C01356DEAC00BACAED /* Pan_ToolBar.png in Resources */,
+				CD81CAAA136661FB00CD68C5 /* Pan_Cursor.png in Resources */,
+				CD81CAAF136664A900CD68C5 /* ZoomIn_Cursor.png in Resources */,
+				CD81CAB1136664A900CD68C5 /* ZoomOut_Cursor.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1024,6 +1054,12 @@
 				278846C112EFBD4D00413C97 /* BSAAdFramework-Info.plist in Resources */,
 				278846D812EFBD4E00413C97 /* MIT-License.rtf in Resources */,
 				62D807C4130D206A00DADBB6 /* Zoom_Icon.png in Resources */,
+				CD4B86BA1356DE2C00BACAED /* ZoomIn_ToolBar.png in Resources */,
+				CD4B86BC1356DE2C00BACAED /* ZoomOut_ToolBar.png in Resources */,
+				CD4B86BF1356DEAC00BACAED /* Pan_ToolBar.png in Resources */,
+				CD81CAA9136661FB00CD68C5 /* Pan_Cursor.png in Resources */,
+				CD81CAAE136664A900CD68C5 /* ZoomIn_Cursor.png in Resources */,
+				CD81CAB0136664A900CD68C5 /* ZoomOut_Cursor.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
