@@ -514,7 +514,9 @@ static CGColorRef CGColorCreateFromNSColor (NSColor *color_)
 			NSRect f                  = tab.view.frame;
 			tab.view.frame            = NSMakeRect((([tabArray count] - 1 - i) * kPickerHeight) + f.origin.x, 0, f.size.width, f.size.height);
 		}
-		[self setSelectedTabX:( ([tabArray count]-selectedTabIndex - 1) * kPickerHeight + 1)];
+        if ([AppDelegate getMode] == normalMode) {
+            [self setSelectedTabX:( ([tabArray count]-selectedTabIndex - 1) * kPickerHeight + 1)];
+        }
 		
 	} else {
 		
@@ -523,8 +525,9 @@ static CGColorRef CGColorCreateFromNSColor (NSColor *color_)
 			NSRect f                  = tab.view.frame;
 			tab.view.frame            = NSMakeRect(0, (i * kPickerHeight) + f.origin.y, f.size.width, f.size.height);
 		}
-		
-		[self setSelectedTabY:(selectedTabIndex * kPickerHeight + 1)];
+		if ([AppDelegate getMode] == normalMode) {
+            [self setSelectedTabY:(selectedTabIndex * kPickerHeight + 1)];
+        }
 	}
 
 	

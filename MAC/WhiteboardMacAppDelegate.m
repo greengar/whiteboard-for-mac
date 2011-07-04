@@ -800,12 +800,16 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 }
 
 -(IBAction)pan:(id)sender {
+    [_picker setSelectedTabX:-kPickerHeight];
+    [_picker setSelectedTabY:-kPickerHeight];
     [self setMode:panMode];
     [[NSCursor panCursor] set];
     [drawingView addCursorRect:NSMakeRect(0, 0, [[self window] frame].size.width, [[self window] frame].size.height) cursor:[NSCursor panCursor]];
 }
 
 -(IBAction)zoomIn:(id)sender {
+    [_picker setSelectedTabX:-kPickerHeight];
+    [_picker setSelectedTabY:-kPickerHeight];
     [self setMode:zoomInMode];
     [[NSCursor zoomInCursor] set];
     [drawingView addCursorRect:NSMakeRect(0, 0, [[self window] frame].size.width, [[self window] frame].size.height) cursor:[NSCursor zoomInCursor]];
@@ -813,6 +817,8 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 }
 
 -(IBAction)zoomOut:(id)sender {
+    [_picker setSelectedTabX:-kPickerHeight];
+    [_picker setSelectedTabY:-kPickerHeight];
     [self setMode:zoomOutMode];
     [[NSCursor zoomOutCursor] set];
     [drawingView addCursorRect:NSMakeRect(0, 0, [[self window] frame].size.width, [[self window] frame].size.height) cursor:[NSCursor zoomOutCursor]];
