@@ -96,8 +96,15 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	//CGRect contentRect = NSMakeRect(0, 0, 1024 + kAdHeight, 768 + kPickerHeight + kBannerHeight);
 	NSRect contentRect = NSMakeRect(0, 0, windowFrame.size.width, windowFrame.size.height - toolbarHeight);
 	contentView = [[NSView alloc] initWithFrame:contentRect];
-
-	drawingView = [[MainPaintingView alloc] initWithFrame:NSMakeRect(0, kAdHeight, contentRect.size.width - kPickerHeight, contentRect.size.height - kBannerHeight - kAdHeight)];
+    int drawingViewWidth = contentRect.size.width - kPickerHeight;
+    if (drawingViewWidth < kDocumentWidth) {
+        drawingViewWidth = kDocumentWidth;
+    }
+    int drawingViewHeight = contentRect.size.height - kBannerHeight - kAdHeight;
+    if (drawingViewHeight < kDocumentHeight) {
+        drawingViewHeight = kDocumentHeight;
+    }
+	drawingView = [[MainPaintingView alloc] initWithFrame:NSMakeRect(0, kAdHeight,  drawingViewWidth, drawingViewHeight)];
 	
 #if LITE
 	adContainerView1 = [[BSAAdContainerView alloc] initWithFrame:NSMakeRect(0, 0, windowFrame.size.width - kPickerHeight, kAdHeight)];
