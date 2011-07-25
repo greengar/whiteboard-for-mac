@@ -39,10 +39,7 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 @synthesize drawingView;
 #if LITE
 	@synthesize adContainerView1;
-	//@synthesize adContainerView2;
-	//@synthesize adContainerView3;
 #endif
-@synthesize viewMode;
 @synthesize brushPanel;
 @synthesize customColorPickerWindow;
 @synthesize customAlertTableDialogWindow;
@@ -108,33 +105,16 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	
 #if LITE
 	adContainerView1 = [[BSAAdContainerView alloc] initWithFrame:NSMakeRect(0, 0, windowFrame.size.width - kPickerHeight, kAdHeight)];
-//	adContainerView2 = [[BSAAdContainerView alloc] initWithFrame:NSMakeRect((contentRect.size.width - kPickerHeight - kAdWidth) / 2, 0, kAdWidth, kAdHeight)];
-//	adContainerView3 = [[BSAAdContainerView alloc] initWithFrame:NSMakeRect(contentRect.size.width - kAdWidth - kPickerHeight, 0, kAdWidth, kAdHeight)];
 	
 	// Without this, the frame height would need to be at least 52 instead of 50
 	adContainerView1.bordered = NO;
-//	adContainerView2.bordered = NO;
-//	adContainerView3.bordered = NO;
 	
 	adContainerView1.zoneIdentifier = [NSNumber numberWithInt:kAdZoneID];
-//	adContainerView2.zoneIdentifier = [NSNumber numberWithInt:kAdZoneID];
-//	adContainerView3.zoneIdentifier = [NSNumber numberWithInt:kAdZoneID];
-	
 	[adContainerView1 setDelegate:self];
-//	[adContainerView2 setDelegate:self];
-//	[adContainerView3 setDelegate:self];
 	
 	//KONG: there has crash when refreshing I cannot debug more with this crash
 	[[BSAAdController sharedController] loadAdsWithKey:@"a2ab64b1c0c7dad55e83bddd72841c1b"]; // Sidebar of Mac App
 	
-//	// start a timer to refresh ads every |refreshInterval| seconds
-//	#define kRefreshIntervalKey @"GSRefreshIntervalKey"
-//	NSTimeInterval refreshInterval = [[NSUserDefaults standardUserDefaults] doubleForKey:kRefreshIntervalKey]; // NSTimeInterval is double
-//	if (refreshInterval < 0.1) {
-//		refreshInterval = kDefaultRefreshInterval; // default 30 seconds
-//	}
-//	DLog(@"refreshInterval = %lf", refreshInterval);
-//	refreshTimer = [[NSTimer scheduledTimerWithTimeInterval:refreshInterval target:self selector:@selector(refreshAds) userInfo:nil repeats:YES] retain]; // release timer on app terminate
 #endif
 	
 	self.picker = [[Picker alloc] initWithFrame:NSMakeRect(contentRect.size.width - kPickerHeight, -(kPickerWidth + kBannerHeight - contentRect.size.height), kPickerHeight, contentRect.size.height - kBannerHeight + (kPickerWidth + kBannerHeight - contentRect.size.height))];
@@ -160,8 +140,6 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	
 #if LITE
 	[contentView addSubview:adContainerView1];
-//	[contentView addSubview:adContainerView2];
-//	[contentView addSubview:adContainerView3];
 #endif
 	
 	[contentView addSubview:drawingView];
@@ -171,30 +149,10 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	[window setContentView:contentView];
 	[window makeFirstResponder: contentView];
 
-	
-
-	
-	int count = [viewModePopUpButton numberOfItems];
-	for(int i = 0; i < count; i++) {
-		NSMenuItem * item = [viewModePopUpButton itemAtIndex:i];
-		[item setEnabled:FALSE];
-	}
-	
-	[viewModePopUpButton setAutoenablesItems:NO];
-	
 	_pointSize = kDefaultPointSize;
 	usingRemoteColor = NO;
 	receivingRemoteColor = NO;
 	usingRemotePointSize = NO;
-	
-	//NSColor * c = [NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:1];
-	//[c getComponents:components];
-	
-//	[[NSColor blueColor] getComponents:components];
-//	[OPAQUE_HEXCOLOR(0x0000FF) getComponents:components];
-//	[OPAQUE_HEXCOLOR(0x00FFFF) getComponents:components];
-	
-//	components[3] = kDefaultOpacityValue;
 	
 	[drawingView setColor:components];
 	[[Picker sharedPicker] setSelectedTab:2];
@@ -212,23 +170,8 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	// force the drawing to draw something
 	// this is a quick fix for the issue of incorrect rendering caused when we pan before drawing anything
 	[drawingView renderLineFromPoint:NSZeroPoint toPoint:NSZeroPoint];
-	
-	// Create namesForStreams NSDictionary
-//	namesForStreams = [[NSMutableDictionary dictionaryWithCapacity:2] retain];
-//	
-//	//[self create];
-//	inStreamThread = [[NSThread alloc] initWithTarget:self
-//											 selector:@selector(create:)
-//											   object:nil];
-//	[inStreamThread start];	
 }
 
-//#if LITE
-//- (void)refreshAds {
-//	DLog();
-//	[adContainerView1 refresh];
-//}
-//#endif
 
 - (void)windowDidResize:(NSNotification *)notification {
 	NSRect windowFrame = window.frame;
@@ -242,8 +185,6 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 #if LITE
 		// ad width changes with the window width
 		[adContainerView1 setFrame:NSMakeRect(0, 0, windowFrame.size.width - kPickerHeight, kAdHeight)]; // kAdWidth
-//		[adContainerView2 setFrame:NSMakeRect((contentRect.size.width - kPickerHeight - kAdWidth) / 2, 0, kAdWidth, kAdHeight)];
-//		[adContainerView3 setFrame:NSMakeRect(contentRect.size.width - kAdWidth - kPickerHeight, 0, kAdWidth, kAdHeight)];
 #endif
 		
 		[customColorPickerBackground setFrame:NSMakeRect(contentRect.size.width - kPickerHeight, 0, kPickerHeight, contentRect.size.height - kBannerHeight)];
@@ -258,8 +199,6 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 #if LITE
 		// ad width changes with the window width
 		[adContainerView1 setFrame:NSMakeRect(0, 0, windowFrame.size.width, kAdHeight)]; // kAdWidth
-//		[adContainerView2 setFrame:NSMakeRect((contentRect.size.width - kAdWidth) / 2, 0, kAdWidth, kAdHeight)];
-//		[adContainerView3 setFrame:NSMakeRect(contentRect.size.width - kAdWidth, 0, kAdWidth, kAdHeight)];
 #endif
 		
 		[customColorPickerBackground setFrame:NSMakeRect(0, kAdHeight, contentRect.size.width, kPickerHeight)];
@@ -536,33 +475,6 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	} else {
 		[networkToolbarItem setImage:[NSImage imageNamed:kNetworkOffImage]];
 	}
-
-	/*
-	 * Change behavior of Networking
-	 * Now show the list of devices
-	 if (![_server isStopped]) {
-	 DLog(@"closing networking");
-	 [self disconnectFromPeerWithStream:nil];
-	 
-	 // stop broadcasting on Bonjour
-	 BOOL stopped = [_server stop];
-	 DLog(@"stopped = %d", stopped);
-	 
-	 if (stopped) {
-	 
-	 }
-	 
-	 } else {
-	 
-	 DLog(@"starting networking");
-	 
-	 
-	 inStreamThread = [[NSThread alloc] initWithTarget:self
-	 selector:@selector(create:)
-	 object:nil];
-	 [inStreamThread start];
-	 
-	 }*/
 }
 
 - (void)didEndConnectSheet:(NSWindow *)sheet returnCode:(int)returnCode  contextInfo:(void  *)contextInfo {	
