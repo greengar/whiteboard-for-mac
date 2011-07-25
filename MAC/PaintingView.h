@@ -22,17 +22,10 @@ typedef struct {
 } pixelStruct;
 
 typedef struct {
-	GLdouble x,y,z;
-} recVec;
+	GLdouble x,y;
+    GLdouble zoomLevel;
+} Transforms;
 
-typedef struct {
-	recVec viewPos; // View position
-	recVec viewDir; // View direction vector
-	recVec viewUp; // View up direction
-	recVec rotPoint; // Point to rotate about
-	GLdouble aperture; // pContextInfo->camera aperture
-	GLint viewWidth, viewHeight; // current window/screen height and width
-} recCamera;
 
 @interface PaintingView : NSOpenGLView {
 //	GLuint textureId;
@@ -44,8 +37,7 @@ typedef struct {
 	BOOL isImageSent;
 	
 	// camera handling
-	recCamera camera;
-	GLfloat shapeSize;
+	Transforms transforms;
 	
 	// Fix black color when undo
 	BOOL isStartToDrawAndNeedErase;
@@ -64,8 +56,5 @@ typedef struct {
 - (CGImageRef)CGRemoteImageRotate:(CGImageRef)imgRef;
 - (void)rotateScreenTexture180degree;
 
-- (void) updateProjection;
-- (void) updateModelView;
-- (void) resizeGL;
 - (void) resetCamera;
 @end

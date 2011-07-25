@@ -20,8 +20,6 @@
 #define iPhoneAndiMacXOffset	32
 #define iPhoneAndiMacYOffset	64
 
-recVec gOrigin = {0.0, 0.0, 0.0};
-
 @implementation PaintingView
 
 //SHERWIN: The following functions are just for hex/byte conversions
@@ -110,7 +108,7 @@ static inline int hexCharsToByteValue(char c1, char c2){
 	
 	// preserveBackbuffer is actually ignored
 	//if(self = [super initWithFrame:frame pixelFormat:[NSOpenGLView defaultPixelFormat]]) {
-	if(self = [super initWithFrame:frame pixelFormat:pixelFormat]) {
+	if((self = [super initWithFrame:frame pixelFormat:pixelFormat])) {
 
 		[self resetCamera];
 		[[self openGLContext] makeCurrentContext];
@@ -183,10 +181,7 @@ static inline int hexCharsToByteValue(char c1, char c2){
 			DLog(@"FBO is supported");
 		} else {
 			DLog(@"FBO is unsupported");
-		}
-
-
-		
+		}		
 #endif
 		
 		glGenFramebuffersEXT(1, &framebufferId);
@@ -342,14 +337,6 @@ static inline int hexCharsToByteValue(char c1, char c2){
 
 // Erases the screen
 - (void)erase {
-//	[[self openGLContext] makeCurrentContext];
-//	
-//	// Clear the buffer
-//	glClear(GL_COLOR_BUFFER_BIT);
-//	
-//	// update screen texture for further rendering
-//	glBindTexture( GL_TEXTURE_2D, screenTextureId );
-//	glCopyTexSubImage2D( GL_TEXTURE_2D, 0, 0, 0, camera.viewPos.x, -camera.viewPos.y, kDocumentWidth, kDocumentHeight );
 
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebufferId);
 	
@@ -368,11 +355,6 @@ static inline int hexCharsToByteValue(char c1, char c2){
 
 
 -(void)drawRect:(NSRect)rect {
-	DLog();
-//	DLog(@"%@", NSStringFromRect(rect));
-//	{{0, 0}, {1024, 768}}
-//	{{0, 0}, {1177, 802}}
-//	{{0, 0}, {1143, 875}}
 	
 	GLfloat borderVertices[8] = {	
 		1024+4, 0.0f,
@@ -429,8 +411,8 @@ static inline int hexCharsToByteValue(char c1, char c2){
 	glTexCoordPointer(2, GL_FLOAT, 0, textureCoord);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 	
-	glTranslatef(camera.viewPos.x-2, camera.viewPos.y-2, 0);
-	glScalef(camera.aperture, camera.aperture, 1.0);
+	glTranslatef(transforms.x-2, transforms.y-2, 0);
+	glScalef(transforms.zoomLevel, transforms.zoomLevel, 1.0);
 	glBindTexture( GL_TEXTURE_2D, borderTextureId );
 	glColor4f(1.0f,1.0f, 1.0f, 1.0f);
 	glVertexPointer(2, GL_FLOAT, 0, borderVertices);
@@ -438,8 +420,8 @@ static inline int hexCharsToByteValue(char c1, char c2){
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 	
 	glLoadIdentity(); 
-	glTranslatef(camera.viewPos.x, camera.viewPos.y, 0);
-	glScalef(camera.aperture, camera.aperture, 1.0);
+	glTranslatef(transforms.x, transforms.y, 0);
+	glScalef(transforms.zoomLevel, transforms.zoomLevel, 1.0);
 	
 	glBindTexture( GL_TEXTURE_2D, screenTextureId );
 	
@@ -854,105 +836,8 @@ void releaseScreenshotData(void *info, const void *data, size_t size) {
 // sets the camera data to initial conditions
 - (void) resetCamera
 {
-	camera.aperture = 1.0;
-	camera.rotPoint = gOrigin;
-	
-	camera.viewPos.x = 0.0;
-	camera.viewPos.y = 0.0;
-	camera.viewPos.z = -10.0;
-	camera.viewDir.x = -camera.viewPos.x; 
-	camera.viewDir.y = -camera.viewPos.y; 
-	camera.viewDir.z = -camera.viewPos.z;
-	
-	camera.viewUp.x = 0;  
-	camera.viewUp.y = 1; 
-	camera.viewUp.z = 0;
-}
-
-
-// handles resizing of GL need context update and if the window dimensions change, a
-// a window dimension update, reseting of viewport and an update of the projection matrix
-- (void) resizeGL
-{
-	NSRect rectView = [self bounds];
-	
-	// ensure camera knows size changed
-	if ((camera.viewHeight != rectView.size.height) ||
-	    (camera.viewWidth != rectView.size.width)) {
-		camera.viewHeight = rectView.size.height;
-		camera.viewWidth = rectView.size.width;
-		
-		glViewport (0, 0, camera.viewWidth, camera.viewHeight);
-		[self updateProjection];  // update projection matrix
-		//[self updateInfoString];
-	}
-}
-
-
-// update the projection matrix based on camera and view info
-- (void) updateProjection
-{
-	GLdouble ratio, radians, wd2;
-	GLdouble left, right, top, bottom, near, far;
-	
-    [[self openGLContext] makeCurrentContext];
-	
-	// set projection
-	glMatrixMode (GL_PROJECTION);
-	glLoadIdentity ();
-	near = -camera.viewPos.z - shapeSize * 0.5;
-	if (near < 0.00001)
-		near = 0.00001;
-	far = -camera.viewPos.z + shapeSize * 0.5;
-	if (far < 1.0)
-		far = 1.0;
-	radians = 0.0174532925 * camera.aperture / 2; // half aperture degrees to radians 
-	wd2 = near * tan(radians);
-	ratio = camera.viewWidth / (float) camera.viewHeight;
-	if (ratio >= 1.0) {
-		left  = -ratio * wd2;
-		right = ratio * wd2;
-		top = wd2;
-		bottom = -wd2;	
-	} else {
-		left  = -wd2;
-		right = wd2;
-		top = wd2 / ratio;
-		bottom = -wd2 / ratio;	
-	}
-	glFrustum (left, right, bottom, top, near, far);
-	//[self updateCameraString];
-}
-
-// ---------------------------------
-
-// updates the contexts model view matrix for object and camera moves
-- (void) updateModelView
-{
-    [[self openGLContext] makeCurrentContext];
-	
-	// move view
-	glMatrixMode (GL_MODELVIEW);
-	glLoadIdentity ();
-	gluLookAt (camera.viewPos.x, camera.viewPos.y, camera.viewPos.z,
-			   camera.viewPos.x + camera.viewDir.x,
-			   camera.viewPos.y + camera.viewDir.y,
-			   camera.viewPos.z + camera.viewDir.z,
-			   camera.viewUp.x, camera.viewUp.y ,camera.viewUp.z);
-	
-//	// if we have trackball rotation to map (this IS the test I want as it can be explicitly 0.0f)
-//	if ((gTrackingViewInfo == self) && gTrackBallRotation[0] != 0.0f) 
-//		glRotatef (gTrackBallRotation[0], gTrackBallRotation[1], gTrackBallRotation[2], gTrackBallRotation[3]);
-//	else {
-//	}
-//	// accumlated world rotation via trackball
-//	glRotatef (worldRotation[0], worldRotation[1], worldRotation[2], worldRotation[3]);
-//	// object itself rotating applied after camera rotation
-//	glRotatef (objectRotation[0], objectRotation[1], objectRotation[2], objectRotation[3]);
-//	rRot[0] = 0.0f; // reset animation rotations (do in all cases to prevent rotating while moving with trackball)
-//	rRot[1] = 0.0f;
-//	rRot[2] = 0.0f;
-//	[self updateCameraString];
+	transforms.zoomLevel = 1.0;
+	transforms.x = transforms.y = 0;
 }
 
 @end
