@@ -53,7 +53,9 @@ alpha:1.0]
 - (void)pickedBrushSize:(float)s;
 - (void)pickedOpacity:(double)o;
 
-- (void)setSelectedTab:(int)tab;	
+- (void)setSelectedTab:(int)tab;
+- (void)setSelectedTabX:(float)x;
+- (void)setSelectedTabY:(float)y;
 - (void)setHorizontal:(BOOL)h;
 
 + (NSString *)opacityKeyForTabIndex:(int)index;

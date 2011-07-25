@@ -30,28 +30,18 @@ GLint zoomAutomaticCountdown = 1;
 - (id)initWithFrame:(NSRect)frame {
 	if ((self = [super initWithFrame:frame])) {
 		
-		// this does nothing on MacBook Core Duo / Intel GMA 950:
-//		[super erase];
-		// do it in -eraseAndAddToUndoImageArray instead
-		
 		isReceivingStroke = FALSE;
 		isDrawingStroke = FALSE;
 		undoImageArray = [[NSMutableArray alloc] init];
-		
-		// this crashes on MacBook Core Duo / Intel GMA 950:
-//		CGImageRef image = [super glToCGImageCreate];
-//		[undoImageArray addObject:(id)image];
-		
+				
 		// this doesn't crash:
 		[self performSelector:@selector(eraseAndAddToUndoImageArray) withObject:nil afterDelay:0];
 		
 		redoImageArray = [[NSMutableArray alloc] init];
 	
 		// Fix opacity range of Whiteboard MAC
-		isEndOfDrawingLine = FALSE;
-		
+		isEndOfDrawingLine = FALSE;		
 		isBeing180Rotated = FALSE;
-    
 	}
 	return self;
 }
@@ -59,9 +49,9 @@ GLint zoomAutomaticCountdown = 1;
 - (void)rotate180Degree {
 	
 	[self rotateScreenTexture180degree];
-
 	[self setNeedsDisplay:YES];
 	isBeing180Rotated = !isBeing180Rotated;
+    
 }
 
 - (void)mouseDown:(NSEvent *)theEvent {
@@ -92,15 +82,15 @@ GLint zoomAutomaticCountdown = 1;
 		pointInView = [self convertPoint:[theEvent locationInWindow] fromView:nil];
 		pointBeganInView = [self convertPoint:[theEvent locationInWindow] fromView:nil];		
 
-		pointInView.x += -camera.viewPos.x;
-		pointInView.y += -camera.viewPos.y;
-		pointInView.x /= camera.aperture;
-		pointInView.y /= camera.aperture;
+		pointInView.x += -transforms.x;
+		pointInView.y += -transforms.y;
+		pointInView.x /= transforms.zoomLevel;
+		pointInView.y /= transforms.zoomLevel;
 		
-		pointBeganInView.x += -camera.viewPos.x;
-		pointBeganInView.y += -camera.viewPos.y;
-		pointBeganInView.x /= camera.aperture;
-		pointBeganInView.y /= camera.aperture;
+		pointBeganInView.x += -transforms.x;
+		pointBeganInView.y += -transforms.y;
+		pointBeganInView.x /= transforms.zoomLevel;
+		pointBeganInView.y /= transforms.zoomLevel;
 		
 		isDrawingStroke = TRUE;
         
@@ -112,8 +102,7 @@ GLint zoomAutomaticCountdown = 1;
 - (void)rightMouseDown:(NSEvent *)theEvent
 {
 	NSPoint location = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-	camera.viewHeight = 768;
-	location.y = camera.viewHeight - location.y;
+	location.y = kDocumentHeight - location.y;
 	gDollyPanStartPoint[0] = location.x;
 	gDollyPanStartPoint[1] = location.y;
 }
@@ -124,10 +113,10 @@ GLint zoomAutomaticCountdown = 1;
 		GLfloat deltaAperture = 0;
 
 		if (fabs([theEvent deltaX]) >= fabs([theEvent deltaY])) {
-			deltaAperture = wheelDelta * -camera.aperture / 200.0f;
+			deltaAperture = wheelDelta * -transforms.zoomLevel / 200.0f;
 		}
 		else {
-			deltaAperture = wheelDelta * camera.aperture / 200.0f;
+			deltaAperture = wheelDelta * transforms.zoomLevel / 200.0f;
 		}
         
         GLfloat ratio = 1 + deltaAperture;
@@ -144,9 +133,9 @@ GLint zoomAutomaticCountdown = 1;
     
     NSPoint locationInWindow = NSMakePoint(center.x, center.y);
     
-    NSPoint locationInDrawing = NSMakePoint(locationInWindow.x - camera.viewPos.x, locationInWindow.y - camera.viewPos.y);
+    NSPoint locationInDrawing = NSMakePoint(locationInWindow.x - transforms.x, locationInWindow.y - transforms.y);
     
-    if(locationInDrawing.x < 0 || locationInDrawing.x > kScreenWidth * camera.aperture || locationInDrawing.y < 0 || locationInDrawing.y > kScreenHeight * camera.aperture) {
+    if(locationInDrawing.x < 0 || locationInDrawing.x > kScreenWidth * transforms.zoomLevel || locationInDrawing.y < 0 || locationInDrawing.y > kScreenHeight * transforms.zoomLevel) {
         
         return [self pointWithCameraEffect:NSMakePoint(kScreenWidth/2, kScreenHeight/2)];
     }
@@ -156,21 +145,15 @@ GLint zoomAutomaticCountdown = 1;
 
 - (void)performZoom:(GLfloat)ratio atCenter:(NSPoint)center {
     
-    if ((camera.aperture <= 0.2 && ratio <= 1.0) || (camera.aperture >= 4.9 && ratio >= 1.0))
+    if ((transforms.zoomLevel <= 0.2 && ratio <= 1.0) || (transforms.zoomLevel >= 4.9 && ratio >= 1.0))
         ratio = 1.0;
     
     NSPoint locationInWindow = [self reLocateCenterIfZoomFromOutside:NSMakePoint(center.x, center.y)];
-    
     NSPoint locationInDrawing = [self pointWithoutCameraEffect:locationInWindow];
-        
     NSPoint locationInTexture = [self pointToTexture:locationInDrawing];
-    
     NSPoint destinationInTexture = [self pointAfterZoomAtCenter:locationInTexture withRatio:ratio];
-    
     NSPoint destinationInDrawing = [self pointFromTexture:destinationInTexture];
-    
     NSPoint destinationInWindow = [self pointWithCameraEffect:destinationInDrawing];
-    
     NSPoint panBack = NSMakePoint(locationInWindow.x - destinationInWindow.x, locationInWindow.y - destinationInWindow.y);
     
     [self mousePanWithVector:panBack];
@@ -182,13 +165,10 @@ GLint zoomAutomaticCountdown = 1;
 - (void)mouseZoomWithClick:(NSPoint)location {
     
 	float wheelDelta = (pointInView.x - location.x + pointInView.y - location.y) / 10;
-    
-	GLfloat deltaAperture = wheelDelta * -camera.aperture / 200.0f;
-    
+	GLfloat deltaAperture = wheelDelta * -transforms.zoomLevel / 200.0f;
     GLfloat ratio = 1 + deltaAperture;
     
     [self performZoom:ratio atCenter:location];
-    
     [self setNeedsDisplay:YES];
 }
 
@@ -210,7 +190,7 @@ GLint zoomAutomaticCountdown = 1;
 }
 
 - (BOOL)zoomInable {
-    return (camera.aperture > 4.9);
+    return (transforms.zoomLevel > 4.9);
 }
 
 - (void)zoomOutAfterToolBarClick {
@@ -219,7 +199,7 @@ GLint zoomAutomaticCountdown = 1;
 }
 
 - (BOOL)zoomOutable {
-    return (camera.aperture < 0.2);
+    return (transforms.zoomLevel < 0.2);
 }
 
 - (void)mouseZoomOutAutomatic {
@@ -238,11 +218,11 @@ GLint zoomAutomaticCountdown = 1;
     
     NSPoint destination = NSMakePoint(original.x, original.y);
     
-    destination.x -= camera.viewPos.x;
-    destination.y -= camera.viewPos.y;
+    destination.x -= transforms.x;
+    destination.y -= transforms.y;
     
-    destination.x /= camera.aperture;
-    destination.y /= camera.aperture;
+    destination.x /= transforms.zoomLevel;
+    destination.y /= transforms.zoomLevel;
     
     return destination;
 }
@@ -251,11 +231,11 @@ GLint zoomAutomaticCountdown = 1;
     
     NSPoint destination = NSMakePoint(original.x, original.y);
     
-    destination.x *= camera.aperture;
-    destination.y *= camera.aperture;
+    destination.x *= transforms.zoomLevel;
+    destination.y *= transforms.zoomLevel;
     
-    destination.x += camera.viewPos.x;
-    destination.y += camera.viewPos.y;
+    destination.x += transforms.x;
+    destination.y += transforms.y;
     
     return destination;
 
@@ -290,22 +270,22 @@ GLint zoomAutomaticCountdown = 1;
 }
 
 - (void)mousePanWithVector: (NSPoint) location {
-	camera.viewPos.x += location.x;
-	camera.viewPos.y += location.y;	
+	transforms.x += location.x;
+	transforms.y += location.y;	
 }
 
 // move camera in x/y plane
 - (void)mousePan: (NSPoint) location {
     GLfloat panX = (gDollyPanStartPoint[0] - location.x) ;/// (1024.0f / -camera.viewPos.z);
     GLfloat panY = (gDollyPanStartPoint[1] - location.y) ;/// (768.0f / -camera.viewPos.z);
-	camera.viewPos.x -= panX;
-	camera.viewPos.y += panY;
+	transforms.x -= panX;
+	transforms.y += panY;
     gDollyPanStartPoint[0] = location.x;
     gDollyPanStartPoint[1] = location.y;
 }
 
 - (void)mouseZoom:(GLfloat)aperture {
-    camera.aperture *= aperture;
+    transforms.zoomLevel *= aperture;
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent {
@@ -318,7 +298,7 @@ GLint zoomAutomaticCountdown = 1;
 	
     if (([theEvent modifierFlags] & NSControlKeyMask) || ([NSAppDelegate getMode] == panMode)) {
         NSPoint locationInView = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-		locationInView.y = camera.viewHeight - locationInView.y;
+		locationInView.y = kDocumentHeight - locationInView.y;
 		[self mousePan:locationInView];
 		[self setNeedsDisplay: YES];
 	}
@@ -329,10 +309,10 @@ GLint zoomAutomaticCountdown = 1;
 		
 		NSPoint locationInView = [self convertPoint:[theEvent locationInWindow]	fromView:nil];
 		
-		locationInView.x += -camera.viewPos.x;
-		locationInView.y += -camera.viewPos.y;
-		locationInView.x /= camera.aperture;
-		locationInView.y /= camera.aperture;
+		locationInView.x += -transforms.x;
+		locationInView.y += -transforms.y;
+		locationInView.x /= transforms.zoomLevel;
+		locationInView.y /= transforms.zoomLevel;
 		
 		NSPoint start2 = NSMakePoint(self.frame.size.height - pointInView.y, pointInView.x);
 		NSPoint end2 = NSMakePoint(self.frame.size.height - locationInView.y, locationInView.x);
@@ -397,10 +377,10 @@ GLint zoomAutomaticCountdown = 1;
         
 		NSPoint locationInView = [self convertPoint:[theEvent locationInWindow]	fromView:nil];
 		
-		locationInView.x += -camera.viewPos.x;
-		locationInView.y += -camera.viewPos.y;
-		locationInView.x /= camera.aperture;
-		locationInView.y /= camera.aperture;
+		locationInView.x += -transforms.x;
+		locationInView.y += -transforms.y;
+		locationInView.x /= transforms.zoomLevel;
+		locationInView.y /= transforms.zoomLevel;
 		
 		if( (pointBeganInView.x == locationInView.x) && (pointBeganInView.y == locationInView.y)) {
 			
