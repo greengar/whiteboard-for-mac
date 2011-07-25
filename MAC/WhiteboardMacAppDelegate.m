@@ -176,6 +176,8 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 
 
 - (void)windowDidResize:(NSNotification *)notification {
+    
+    // FIXME: after resizing, the top of the drawing is untouchable
 	NSRect windowFrame = window.frame;
 	toolbarHeight = NSHeight(windowFrame) - NSHeight([[window contentView] frame]);
 	NSRect contentRect = NSMakeRect(0, 0, windowFrame.size.width, windowFrame.size.height - toolbarHeight);
