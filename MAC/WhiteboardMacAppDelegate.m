@@ -63,7 +63,9 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	// Insert code here to initialize your application 
-	
+    
+    // TODO: toolbar reposition doesn't work in fullscreen
+	[window setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
 	[window setAcceptsMouseMovedEvents: YES];
 	[window setDelegate:self];
 	if ([window acceptsMouseMovedEvents]) {DLog(@"window now acceptsMouseMovedEvents");}
