@@ -65,7 +65,9 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	// Insert code here to initialize your application 
     
     // TODO: toolbar reposition doesn't work in fullscreen
+#ifdef AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER    
 	[window setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
+#endif
 	[window setAcceptsMouseMovedEvents: YES];
 	[window setDelegate:self];
 	if ([window acceptsMouseMovedEvents]) {DLog(@"window now acceptsMouseMovedEvents");}
@@ -205,7 +207,16 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 		[self.picker setHorizontal:FALSE];
 		[connectedDeviceName setFrame:NSMakeRect(0, -7, contentRect.size.width, kBannerHeight)];
 		[bannerView setFrame:NSMakeRect(0, contentRect.size.height - kBannerHeight, contentRect.size.width, kBannerHeight)];
-		[drawingView setFrame:NSMakeRect(0, kAdHeight, contentRect.size.width - kPickerHeight,contentRect.size.height - kBannerHeight -kAdHeight)];
+        
+        int drawingViewWidth = contentRect.size.width - kPickerHeight;
+        if (drawingViewWidth < kDocumentWidth) {
+            drawingViewWidth = kDocumentWidth;
+        }
+        int drawingViewHeight = contentRect.size.height - kBannerHeight - kAdHeight;
+        if (drawingViewHeight < kDocumentHeight) {
+            drawingViewHeight = kDocumentHeight;
+        }
+        [drawingView setFrame:NSMakeRect(0, kAdHeight,  drawingViewWidth, drawingViewHeight)];
 		
 	} else {
 		
