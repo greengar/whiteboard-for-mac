@@ -43,32 +43,11 @@
 - (void)undoStroke;
 - (void)redoStroke;
 - (void)pushScreenToUndoStack;
-- (void)pushScreenToUndoStack:(CGImageRef)image;
-- (void)pushScreenToRedoStack:(CGImageRef)image;
-- (void)releaseRedoStack;
-
-- (void)mousePan:(NSPoint)location;
-- (void)mousePanWithVector: (NSPoint) location;
-
-- (void)mouseZoom:(GLfloat)aperture;
-- (void)mouseZoomWithClick:(NSPoint)location;
-- (void)mouseZoomInAutomatic;
-- (void)mouseZoomOutAutomatic;
 
 - (void)zoomInAfterToolBarClick;
 - (void)zoomOutAfterToolBarClick;
 - (BOOL)zoomInable;
 - (BOOL)zoomOutable;
-
-- (NSPoint)reLocateCenterIfZoomFromOutside:(NSPoint)center;
-
-- (void)performZoom:(GLfloat)ratio atCenter:(NSPoint)center;
-
-- (NSPoint) pointWithoutCameraEffect:(NSPoint)original;
-- (NSPoint) pointWithCameraEffect:(NSPoint)original;
-- (NSPoint) pointAfterZoomAtCenter:(NSPoint)original withRatio:(GLfloat)ratio;
-- (NSPoint) pointToTexture:(NSPoint)original;
-- (NSPoint) pointFromTexture:(NSPoint)original;
 
 - (void)renderLocalLineFromPoint:(NSPoint)start toPoint:(NSPoint)end;
 @end

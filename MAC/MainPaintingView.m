@@ -12,9 +12,31 @@
 #import "NSCursor+CustomCursors.h"
 
 #define kUndoMaxBuffer 10
-
 GLint gDollyPanStartPoint[2] = {0, 0};
 GLint zoomAutomaticCountdown = 1;
+
+@interface MainPaintingView () 
+    - (void)pushScreenToUndoStack:(CGImageRef)image;
+    - (void)pushScreenToRedoStack:(CGImageRef)image;
+    - (void)releaseRedoStack;
+
+    - (void)mousePan:(NSPoint)location;
+    - (void)mousePanWithVector: (NSPoint) location;
+
+    - (void)mouseZoom:(GLfloat)aperture;
+    - (void)mouseZoomWithClick:(NSPoint)location;
+    - (void)mouseZoomInAutomatic;
+    - (void)mouseZoomOutAutomatic;
+    - (void)performZoom:(GLfloat)ratio atCenter:(NSPoint)center;
+    - (NSPoint)reLocateCenterIfZoomFromOutside:(NSPoint)center;
+
+    - (NSPoint) pointWithoutCameraEffect:(NSPoint)original;
+    - (NSPoint) pointWithCameraEffect:(NSPoint)original;
+    - (NSPoint) pointAfterZoomAtCenter:(NSPoint)original withRatio:(GLfloat)ratio;
+    - (NSPoint) pointToTexture:(NSPoint)original;
+    - (NSPoint) pointFromTexture:(NSPoint)original;
+@end
+
 
 @implementation MainPaintingView
 
@@ -33,7 +55,7 @@ GLint zoomAutomaticCountdown = 1;
 		isReceivingStroke = FALSE;
 		isDrawingStroke = FALSE;
 		undoImageArray = [[NSMutableArray alloc] init];
-				
+        
 		// this doesn't crash:
 		[self performSelector:@selector(eraseAndAddToUndoImageArray) withObject:nil afterDelay:0];
 		
