@@ -67,6 +67,8 @@ typedef enum {
     IBOutlet NSToolbarItem  * zoomOutToolbarItem;
 	IBOutlet NSToolbarItem  * networkToolbarItem;
 	IBOutlet CMAlertTableDialog * customAlertTableDialogWindow;
+    IBOutlet NSMenuItem     * fullscreenMenuItem;
+    
     
 	NSText                  * connectedDeviceName;
 	NSImageView             * bannerView;
@@ -149,10 +151,9 @@ typedef enum {
 -(IBAction)pan:(id)sender;
 -(IBAction)zoomIn:(id)sender;
 -(IBAction)zoomOut:(id)sender;
-
 -(IBAction)flipVertical:(id)sender;
 -(IBAction)brushSelectorReposition:(id)sender;
-
+-(IBAction)toggleFullscreenDrawing:(id)sender;
 -(IBAction)cancelConnection:(id)sender;
 
 - (void)send:(NSString*)message;

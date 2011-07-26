@@ -172,8 +172,17 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	// force the drawing to draw something
 	// this is a quick fix for the issue of incorrect rendering caused when we pan before drawing anything
 	[drawingView renderLineFromPoint:NSZeroPoint toPoint:NSZeroPoint];
+    
+#ifndef AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER    
+    [[NSApp mainMenu] removeItem:fullscreenMenuItem];
+#endif
 }
 
+-(IBAction)toggleFullscreenDrawing:(id)sender {
+#ifdef AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER
+    [window toggleFullScreen:sender];
+#endif
+}
 
 - (void)windowDidResize:(NSNotification *)notification {
     
