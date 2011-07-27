@@ -76,6 +76,7 @@ static CMColorPicker *sharedColorSelector = nil;
 	[brushSizeText setString:@"Width:"];
 	[brushSizeText setEditable:NO];
 	[brushSizeText setSelectable:NO];
+    [brushSizeText setTextColor:[NSColor whiteColor]];
 	[brushSizeText setBackgroundColor:[NSColor clearColor]];
 	[self addSubview:brushSizeText];
 	
@@ -95,6 +96,7 @@ static CMColorPicker *sharedColorSelector = nil;
 	[opacityValueText setString:@"Opacity:"];
 	[opacityValueText setEditable:NO];
 	[opacityValueText setSelectable:NO];
+    [opacityValueText setTextColor:[NSColor whiteColor]];     
 	[opacityValueText setBackgroundColor:[NSColor clearColor]];
 	[self addSubview:opacityValueText];
 	

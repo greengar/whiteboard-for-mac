@@ -874,30 +874,80 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorPickerValueChanged:) name:@"kMyColorPickerValueChangedNotification" object:nil];
 	}
 	
+    MAWindowPosition colorPickerWindowSide = 0;
+    NSPoint colorPickerWindowLocation;
+    if (isBrushSelectorHorizontal) {
+        colorPickerWindowSide = MAPositionTop;
+#if LITE            
+        colorPickerWindowLocation = NSMakePoint( (10 - self.picker.selectedTabIndex) * kPickerHeight - 35, kPickerHeight + kAdHeight);            
+#else
+        colorPickerWindowLocation = NSMakePoint( (10 -self.picker.selectedTabIndex) * kPickerHeight - 35, kPickerHeight);
+#endif
+    } else {
+        colorPickerWindowSide = MAPositionLeft;
+        colorPickerWindowLocation = NSMakePoint(window.frame.size.width - kPickerHeight, self.picker.selectedTabIndex * kPickerHeight + 100);
+    }
+    
 	if (!customColorPickerWindow) {
 	
 		[customColorPicker setSelectedColor:chosenColor animated:YES];
 //		[customColorPicker setBrushSize:self.pointSize];
 		
-		customColorPickerWindow = [[NSWindow alloc] init];
-		[customColorPickerWindow setFrameTopLeftPoint: NSMakePoint( [self window].frame.origin.x + [self window].frame.size.width, 768 - 300)];
-		[customColorPickerWindow setDelegate:self];
-		[customColorPickerWindow setStyleMask:NSTitledWindowMask|NSClosableWindowMask];
-		[customColorPickerWindow setContentSize:customColorPicker.frame.size];
-		[customColorPickerWindow setContentView:customColorPicker];
-		[customColorPickerWindow setAcceptsMouseMovedEvents: YES];
-		[customColorPickerWindow setReleasedWhenClosed:NO];
+        
+//		customColorPickerWindow = [[NSWindow alloc] init];
+//		[customColorPickerWindow setFrameTopLeftPoint: NSMakePoint( [self window].frame.origin.x + [self window].frame.size.width, 768 - 300)];
+//		[customColorPickerWindow setDelegate:self];
+//		[customColorPickerWindow setStyleMask:NSTitledWindowMask|NSClosableWindowMask];
+//		[customColorPickerWindow setContentSize:customColorPicker.frame.size];
+//		[customColorPickerWindow setContentView:customColorPicker];
+//		[customColorPickerWindow setAcceptsMouseMovedEvents: YES];
+//		[customColorPickerWindow setReleasedWhenClosed:NO];
+        
+        customColorPickerWindow = [[MAAttachedWindow alloc] initWithView:customColorPicker 
+                               attachedToPoint:colorPickerWindowLocation
+                                      inWindow:window 
+                                        onSide:colorPickerWindowSide 
+                                    atDistance:10];
 		[window addChildWindow:customColorPickerWindow ordered:NSWindowAbove];
 		
 		[window orderFrontRegardless];
 		
 		isCustomColorPickerOn = YES;
 	} else {
+        [customColorPickerWindow setPoint:colorPickerWindowLocation side:colorPickerWindowSide];
 		[customColorPicker setSelectedColor:chosenColor animated:YES];
 //		[customColorPicker setOpacity:self.pointSize];
 //		[customColorPicker setBrushSize:self.pointSize];
 	}
 
+}
+
+- (void)updateCustomColorPickerLocation {
+    if (customColorPickerWindow) {
+        MAWindowPosition colorPickerWindowSide = 0;
+        NSPoint colorPickerWindowLocation;
+        if (isBrushSelectorHorizontal) {
+            colorPickerWindowSide = MAPositionTop;
+#if LITE            
+            colorPickerWindowLocation = NSMakePoint( (10 - self.picker.selectedTabIndex) * kPickerHeight - 35, kPickerHeight + kAdHeight);            
+#else
+            colorPickerWindowLocation = NSMakePoint( (10 -self.picker.selectedTabIndex) * kPickerHeight - 35, kPickerHeight);
+#endif
+        } else {
+            colorPickerWindowSide = MAPositionLeft;
+            colorPickerWindowLocation = NSMakePoint(window.frame.size.width - kPickerHeight, self.picker.selectedTabIndex * kPickerHeight + 100);
+        }
+        [customColorPickerWindow setPoint:colorPickerWindowLocation side:colorPickerWindowSide];    
+    }
+}
+
+- (void)closeCustomColorPickerLocation {
+    [window removeChildWindow:customColorPickerWindow];
+    [customColorPickerWindow orderOut:self];
+    [customColorPickerWindow release];
+    customColorPickerWindow = nil;
+    
+    isCustomColorPickerOn = NO;
 }
 
 - (void)windowWillClose:(NSNotification *)notification
@@ -1263,7 +1313,7 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 		// - (void)windowDidResize:(NSNotification *)notification will handle sub view repositioning
 		
 	}
-
+    [self updateCustomColorPickerLocation];
 }
 
 #if LITE

@@ -246,6 +246,9 @@ static Picker *sharedPicker = nil;
 	if (needShowCustomColorPicker) {
 		[tabObject showCustomColorPicker];
 	} else {
+        if (NSAppDelegate.isCustomColorPickerOn) {
+            [NSAppDelegate updateCustomColorPickerLocation];
+        }
 		
 		if (needUpdateCustomColorPicker) {
 			// update color on custom color picker

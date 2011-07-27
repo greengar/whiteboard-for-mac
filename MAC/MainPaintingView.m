@@ -83,6 +83,10 @@ GLint zoomAutomaticCountdown = 1;
 - (void)mouseDown:(NSEvent *)theEvent {
     [super mouseDown:theEvent];
 	
+    if (NSAppDelegate.isCustomColorPickerOn) {
+        [NSAppDelegate closeCustomColorPickerLocation];
+    }
+    
 	// Release redo stack
 	if ([redoImageArray count] > 0) {
 		[self releaseRedoStack];

@@ -15,6 +15,8 @@
 #import "CMAlertTableDialog.h"
 #import "GSConnectionController.h"
 #import "GSAlert.h"
+#import "MAAttachedWindow.h"
+
 #if LITE
 	#import "Framework/Classes/BSAAdFramework.h"
 #endif
@@ -77,7 +79,7 @@ typedef enum {
 	
 	Picker                  * _picker;
 	CMColorPicker           * customColorPicker;
-	NSWindow                * customColorPickerWindow;
+	MAAttachedWindow        * customColorPickerWindow;
 	
 	MainPaintingView        * drawingView;
 	ToolType                _toolMode;
@@ -138,6 +140,8 @@ typedef enum {
 @property (nonatomic, retain) GSConnectionController *connection;
 
 - (void)showColorPicker:(NSColor*)chosenColor;
+- (void)updateCustomColorPickerLocation;
+- (void)closeCustomColorPickerLocation;
 
 // Toolbar button
 -(IBAction)networking:(id)sender;
