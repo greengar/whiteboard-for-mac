@@ -23,6 +23,11 @@
 	BOOL isReceivingStroke;
 	BOOL isDrawingStroke;
 
+    // multitouch drawing
+    float       initialTouchLocation[2];
+    BOOL        followingTouches;
+    BOOL        panningTouches;
+    
 	// Fix opacity range of Whiteboard MAC
 	BOOL isEndOfDrawingLine;
 	

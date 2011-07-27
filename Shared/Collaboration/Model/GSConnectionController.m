@@ -1666,7 +1666,7 @@ static NSString * const kDisconnectReasonUnavailable = @"is unavailable";
 #if INTERNET_INCLUDING				
 				[_internetConnection setConnectedWhiteboard:(GSInternetWhiteboard *) _connectedWhiteboard];
 #endif
-			} else if ((_connectedWhiteboard.type == GSConnectionTypeLocal)) {
+			} else if (_connectedWhiteboard.type == GSConnectionTypeLocal) {
 //				[_localConnection removeAllStreamsExceptStreamsInWhiteboard:(GSLocalWhiteboard *)_connectedWhiteboard];
 //				[_localConnection.bvc setConnectedName:_connectedWhiteboard.name];
 			}

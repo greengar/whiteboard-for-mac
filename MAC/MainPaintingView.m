@@ -64,6 +64,10 @@ GLint zoomAutomaticCountdown = 1;
 		// Fix opacity range of Whiteboard MAC
 		isEndOfDrawingLine = FALSE;		
 		isBeing180Rotated = FALSE;
+        
+        followingTouches = NO;
+        
+        [self setAcceptsTouchEvents:YES]; // enable multitouch events
 	}
 	return self;
 }
@@ -129,20 +133,56 @@ GLint zoomAutomaticCountdown = 1;
 	gDollyPanStartPoint[1] = location.y;
 }
 
-- (void)scrollWheel:(NSEvent *)theEvent {
-    float wheelDelta = [theEvent deltaX] + [theEvent deltaY] + [theEvent deltaZ];
+- (void)touchesBeganWithEvent:(NSEvent *)event {
+    
+}
+
+- (void)touchesMovedWithEvent:(NSEvent *)event {
+    double dx, dy;
+	if([event type] == NSEventTypeGesture) {
+		if(([event subtype] & NSTouchPhaseMoved) && ([event subtype] & NSTouchPhaseStationary)) {
+			NSArray* touches = [[event touchesMatchingPhase: NSTouchPhaseTouching inView: self] allObjects];
+			if(touches.count == 2) {
+				if(followingTouches == NO) {
+					followingTouches = YES;
+					panningTouches = YES;
+					initialTouchLocation[0] = 0.5 * (((NSTouch*)[touches objectAtIndex: 0]).normalizedPosition.x + ((NSTouch*)[touches objectAtIndex: 1]).normalizedPosition.x);
+					initialTouchLocation[1] = 0.5 * (((NSTouch*)[touches objectAtIndex: 0]).normalizedPosition.y + ((NSTouch*)[touches objectAtIndex: 1]).normalizedPosition.y);
+				}
+				else if(panningTouches == YES) {
+					dx = 0.5 * (((NSTouch*)[touches objectAtIndex: 0]).normalizedPosition.x + ((NSTouch*)[touches objectAtIndex: 1]).normalizedPosition.x) - initialTouchLocation[0];
+					dy = 0.5 * (((NSTouch*)[touches objectAtIndex: 0]).normalizedPosition.y + ((NSTouch*)[touches objectAtIndex: 1]).normalizedPosition.y) - initialTouchLocation[1];
+					initialTouchLocation[0] = 0.5 * (((NSTouch*)[touches objectAtIndex: 0]).normalizedPosition.x + ((NSTouch*)[touches objectAtIndex: 1]).normalizedPosition.x);
+					initialTouchLocation[1] = 0.5 * (((NSTouch*)[touches objectAtIndex: 0]).normalizedPosition.y + ((NSTouch*)[touches objectAtIndex: 1]).normalizedPosition.y);
+					[self mousePanWithVector:NSMakePoint(dx*1000, dy*1000)];
+                    [self setNeedsDisplay:YES];
+				}
+			}
+		}
+	}
+}
+
+- (void)touchesEndedWithEvent:(NSEvent *)event {
+    if(followingTouches) {
+		followingTouches = NO;
+		panningTouches = NO;
+	}
+}
+
+- (void)touchesCancelledWithEvent:(NSEvent *)event {
+
+}
+
+- (void)magnifyWithEvent:(NSEvent *)event {
+
+    float wheelDelta = [event magnification];
     if (wheelDelta) {
 		GLfloat deltaAperture = 0;
-
-		if (fabs([theEvent deltaX]) >= fabs([theEvent deltaY])) {
-			deltaAperture = wheelDelta * -transforms.zoomLevel / 200.0f;
-		}
-		else {
-			deltaAperture = wheelDelta * transforms.zoomLevel / 200.0f;
-		}
         
+		deltaAperture = wheelDelta * transforms.zoomLevel / 2.0f;
+		        
         GLfloat ratio = 1 + deltaAperture;
-        NSPoint locationInView = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+        NSPoint locationInView = [self convertPoint:[event locationInWindow] fromView:nil];
         
         [self performZoom:ratio atCenter:locationInView];
         
@@ -150,6 +190,29 @@ GLint zoomAutomaticCountdown = 1;
         
     }
 }
+
+// replaced by magnifyWithEvent multi touch method
+//- (void)scrollWheel:(NSEvent *)theEvent {
+//    float wheelDelta = [theEvent deltaX] + [theEvent deltaY] + [theEvent deltaZ];
+//    if (wheelDelta) {
+//		GLfloat deltaAperture = 0;
+//
+//		if (fabs([theEvent deltaX]) >= fabs([theEvent deltaY])) {
+//			deltaAperture = wheelDelta * -transforms.zoomLevel / 200.0f;
+//		}
+//		else {
+//			deltaAperture = wheelDelta * transforms.zoomLevel / 200.0f;
+//		}
+//        
+//        GLfloat ratio = 1 + deltaAperture;
+//        NSPoint locationInView = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+//        
+//        [self performZoom:ratio atCenter:locationInView];
+//        
+//        [self setNeedsDisplay:YES];
+//        
+//    }
+//}
 
 - (NSPoint) reLocateCenterIfZoomFromOutside:(NSPoint)center {
     
