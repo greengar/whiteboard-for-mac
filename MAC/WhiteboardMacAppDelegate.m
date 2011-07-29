@@ -123,25 +123,40 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
     int pickerViewLeft = 0;
     int pickerViewBottom = 0;
     if(horizontal) {
+        pickerViewWidth = kPickerWidth;
+        pickerViewHeight = kPickerHeight;
         pickerWindowWidth = mainWindowWidth;
-        pickerWindowHeight = kPickerHeight;
+        pickerWindowHeight = pickerViewHeight;
+        
+        
+    } else {
+        pickerViewWidth = kPickerHeight;
+        pickerViewHeight = kPickerWidth;
+        pickerWindowWidth = kPickerHeight;
+        pickerWindowHeight = mainWindowHeight - toolbarHeight - kPickerWindowResizeOffset;
+                
+    }
+    
+    if(pickerWindowHeight > pickerViewHeight) {
+        pickerWindowHeight = pickerViewHeight;
+    }
+    if(pickerWindowWidth > pickerViewWidth) {
+        pickerWindowWidth = pickerViewWidth;
+    }
+    
+    if(horizontal) {
         pickerWindowLeft = mainWindowLeft;
 #if LITE
         pickerWindowTop = mainWindowBottom + pickerWindowHeight + kAdHeight;
 #else
         pickerWindowTop = mainWindowBottom + pickerWindowHeight;
 #endif
-        pickerViewWidth = kPickerWidth;
-        pickerViewHeight = kPickerHeight;
     } else {
-        pickerWindowWidth = kPickerHeight;
-        pickerWindowHeight = mainWindowHeight - toolbarHeight - kPickerWindowResizeOffset;
         pickerWindowLeft = mainWindowLeft + mainWindowWidth - pickerWindowWidth;
         pickerWindowTop = mainWindowBottom + pickerWindowHeight + kPickerWindowResizeOffset;
         
-        pickerViewBottom = pickerWindowHeight - kPickerWidth;
-        pickerViewWidth = kPickerHeight;
-        pickerViewHeight = kPickerWidth;
+        pickerViewBottom = pickerWindowHeight - pickerViewHeight;
+
     }
     if(!self.picker) {
         self.picker = [[Picker alloc] initWithFrame:NSMakeRect(pickerViewLeft, pickerViewBottom, pickerViewWidth, pickerViewHeight)];
@@ -160,12 +175,7 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
         [window addChildWindow:pickerWindow ordered:NSWindowAbove];
         [window orderFrontRegardless];
     }
-    if(pickerWindowHeight > pickerViewHeight) {
-        pickerWindowHeight = pickerViewHeight;
-    }
-    if(pickerWindowWidth > pickerViewWidth) {
-        pickerWindowWidth = pickerViewWidth;
-    }
+    
     [pickerWindow setContentSize:NSMakeSize(pickerWindowWidth, pickerWindowHeight)];
     [pickerWindow setFrameTopLeftPoint:NSMakePoint(pickerWindowLeft, pickerWindowTop)];
 }
