@@ -168,10 +168,12 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
         pickerWindow = [[NSWindow alloc] init];
         [pickerWindow setDelegate:self];
         [pickerWindow setStyleMask:NSBorderlessWindowMask];
+        [pickerWindow setBackgroundColor:[NSColor colorWithDeviceRed:54.0/255 green:54.0/255 blue:54.0/255 alpha:1.0]];
         [pickerWindow setContentView:self.picker];
         [pickerWindow setAcceptsMouseMovedEvents: YES];
         [pickerWindow setReleasedWhenClosed:NO];
         [pickerWindow setMovable:NO];
+
         [window addChildWindow:pickerWindow ordered:NSWindowAbove];
         [window orderFrontRegardless];
     }
@@ -382,6 +384,8 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
     
     [self adjustPickerWindowHorizontal:isBrushSelectorHorizontal];
     [self adjustBannerWindowHorizontal:isBrushSelectorHorizontal];
+    
+    [self updateCustomColorPickerLocation];
 
 }
 
@@ -1027,14 +1031,11 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
     NSPoint colorPickerWindowLocation;
     if (isBrushSelectorHorizontal) {
         colorPickerWindowSide = MAPositionTop;
-#if LITE            
-        colorPickerWindowLocation = NSMakePoint( (10 - self.picker.selectedTabIndex) * kPickerHeight - 35, kPickerHeight + kAdHeight);            
-#else
-        colorPickerWindowLocation = NSMakePoint( (10 -self.picker.selectedTabIndex) * kPickerHeight - 35, kPickerHeight);
-#endif
+        colorPickerWindowLocation = NSMakePoint( (10 - self.picker.selectedTabIndex) * kPickerHeight - 35, kPickerHeight);            
     } else {
         colorPickerWindowSide = MAPositionLeft;
-        colorPickerWindowLocation = NSMakePoint(window.frame.size.width - kPickerHeight, self.picker.selectedTabIndex * kPickerHeight + 100);
+//        colorPickerWindowLocation = NSMakePoint(0, self.picker.selectedTabIndex * kPickerHeight);
+        colorPickerWindowLocation = NSMakePoint(0, self.picker.frame.origin.y + self.picker.selectedTabIndex * kPickerHeight + 40);        
     }
     
 	if (!customColorPickerWindow) {
@@ -1054,7 +1055,7 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
         
         customColorPickerWindow = [[MAAttachedWindow alloc] initWithView:customColorPicker 
                                attachedToPoint:colorPickerWindowLocation
-                                      inWindow:window 
+                                      inWindow:pickerWindow 
                                         onSide:colorPickerWindowSide 
                                     atDistance:10];
 		[window addChildWindow:customColorPickerWindow ordered:NSWindowAbove];
@@ -1068,7 +1069,6 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 //		[customColorPicker setOpacity:self.pointSize];
 //		[customColorPicker setBrushSize:self.pointSize];
 	}
-
 }
 
 - (void)updateCustomColorPickerLocation {
@@ -1077,14 +1077,10 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
         NSPoint colorPickerWindowLocation;
         if (isBrushSelectorHorizontal) {
             colorPickerWindowSide = MAPositionTop;
-#if LITE            
-            colorPickerWindowLocation = NSMakePoint( (10 - self.picker.selectedTabIndex) * kPickerHeight - 35, kPickerHeight + kAdHeight);            
-#else
-            colorPickerWindowLocation = NSMakePoint( (10 -self.picker.selectedTabIndex) * kPickerHeight - 35, kPickerHeight);
-#endif
+            colorPickerWindowLocation = NSMakePoint( (10 - self.picker.selectedTabIndex) * kPickerHeight - 35, kPickerHeight);            
         } else {
             colorPickerWindowSide = MAPositionLeft;
-            colorPickerWindowLocation = NSMakePoint(window.frame.size.width - kPickerHeight, self.picker.selectedTabIndex * kPickerHeight + 100);
+            colorPickerWindowLocation = NSMakePoint(0, self.picker.frame.origin.y + self.picker.selectedTabIndex * kPickerHeight + 40);
         }
         [customColorPickerWindow setPoint:colorPickerWindowLocation side:colorPickerWindowSide];    
     }
