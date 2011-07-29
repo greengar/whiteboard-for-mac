@@ -137,12 +137,12 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
                 
     }
     
-    if(pickerWindowHeight > pickerViewHeight) {
-        pickerWindowHeight = pickerViewHeight;
-    }
-    if(pickerWindowWidth > pickerViewWidth) {
-        pickerWindowWidth = pickerViewWidth;
-    }
+//    if(pickerWindowHeight > pickerViewHeight) {
+//        pickerWindowHeight = pickerViewHeight;
+//    }
+//    if(pickerWindowWidth > pickerViewWidth) {
+//        pickerWindowWidth = pickerViewWidth;
+//    }
     
     if(horizontal) {
         pickerWindowLeft = mainWindowLeft;
