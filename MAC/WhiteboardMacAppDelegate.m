@@ -153,7 +153,7 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 #endif
     } else {
         pickerWindowLeft = mainWindowLeft + mainWindowWidth - pickerWindowWidth;
-        pickerWindowTop = mainWindowBottom + pickerWindowHeight + kPickerWindowResizeOffset;
+        pickerWindowTop = mainWindowBottom + mainWindowHeight - toolbarHeight + kPickerWindowResizeOffset;
         
         pickerViewBottom = pickerWindowHeight - pickerViewHeight;
 
