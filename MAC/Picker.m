@@ -59,7 +59,7 @@ static Picker *sharedPicker = nil;
 	
 	if ((self = [super initWithFrame:frame])) {
 		
-		isHorizontal = TRUE;
+		isHorizontal = YES;
 		
 		[self setAutoresizesSubviews:YES];
 		[self setImage:[NSImage imageNamed:@"Gray-background2.gif"]];

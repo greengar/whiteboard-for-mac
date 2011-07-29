@@ -80,6 +80,7 @@ typedef enum {
 	Picker                  * _picker;
 	CMColorPicker           * customColorPicker;
 	MAAttachedWindow        * customColorPickerWindow;
+    MAAttachedWindow        * pickerWindow;
 	
 	MainPaintingView        * drawingView;
 	ToolType                _toolMode;
@@ -142,6 +143,7 @@ typedef enum {
 - (void)showColorPicker:(NSColor*)chosenColor;
 - (void)updateCustomColorPickerLocation;
 - (void)closeCustomColorPickerLocation;
+- (void)adjustPickerWindowHorizontal:(BOOL)horizontal;
 
 // Toolbar button
 -(IBAction)networking:(id)sender;

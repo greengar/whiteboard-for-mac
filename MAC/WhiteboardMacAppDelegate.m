@@ -61,6 +61,69 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	//[[BrushPickerPanel class] poseAsClass:[NSColorPanel class]];
 }
 
+- (void)adjustPickerWindowHorizontal:(BOOL)horizontal {
+    //horizontal = YES;
+    int mainWindowWidth = [self window].frame.size.width;
+    int mainWindowHeight = [self window].frame.size.height;
+    int mainWindowLeft = [self window].frame.origin.x;
+    int mainWindowBottom = [self window].frame.origin.y;
+    int pickerWindowLeft = 0;
+    int pickerWindowTop = 0;
+    int pickerWindowWidth = 0;
+    int pickerWindowHeight = 0;
+    int pickerViewWidth = 0;
+    int pickerViewHeight = 0;
+    int pickerViewLeft = 0;
+    int pickerViewTop = 0;
+    if(horizontal) {
+        pickerWindowWidth = mainWindowWidth;
+        pickerWindowHeight = kPickerHeight;
+        pickerWindowLeft = mainWindowLeft;
+#if LITE
+        pickerWindowTop = mainWindowBottom + pickerWindowHeight + kAdHeight;
+#else
+        pickerWindowTop = mainWindowBottom + pickerWindowHeight;
+#endif
+        pickerViewWidth = kPickerWidth;
+        pickerViewHeight = kPickerHeight;
+    } else {
+        pickerWindowWidth = kPickerHeight;
+        pickerWindowHeight = mainWindowHeight - toolbarHeight - kPickerWindowResizeOffset;
+        pickerWindowLeft = mainWindowLeft + mainWindowWidth - pickerWindowWidth;
+        pickerWindowTop = mainWindowBottom + pickerWindowHeight + kPickerWindowResizeOffset;
+        
+        pickerViewTop = pickerWindowHeight - kPickerWidth;
+        pickerViewWidth = kPickerHeight;
+        pickerViewHeight = kPickerWidth;
+    }
+    if(!self.picker) {
+        self.picker = [[Picker alloc] initWithFrame:NSMakeRect(pickerViewLeft, pickerViewTop, pickerViewWidth, pickerViewHeight)];
+    } else {
+        [self.picker setFrame:NSMakeRect(pickerViewLeft, pickerViewTop, pickerViewWidth, pickerViewHeight)];
+    }
+    [self.picker setHorizontal:horizontal];
+    if(!pickerWindow) {
+        pickerWindow = [[NSWindow alloc] init];
+        [pickerWindow setDelegate:self];
+        [pickerWindow setStyleMask:NSBorderlessWindowMask];
+        [pickerWindow setContentView:self.picker];
+        [pickerWindow setAcceptsMouseMovedEvents: YES];
+        [pickerWindow setReleasedWhenClosed:NO];
+        [pickerWindow setMovable:NO];
+        [window addChildWindow:pickerWindow ordered:NSWindowAbove];
+        [pickerWindow setContentSize:self.picker.frame.size];
+        [window orderFrontRegardless];
+    }
+    if(pickerWindowHeight > pickerViewHeight) {
+        pickerWindowHeight = pickerViewHeight;
+    }
+    if(pickerWindowWidth > pickerViewWidth) {
+        pickerWindowWidth = pickerViewWidth;
+    }
+    [pickerWindow setContentSize:NSMakeSize(pickerWindowWidth, pickerWindowHeight)];
+    [pickerWindow setFrameTopLeftPoint:NSMakePoint(pickerWindowLeft, pickerWindowTop)];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	// Insert code here to initialize your application 
     
@@ -97,14 +160,15 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	//CGRect contentRect = NSMakeRect(0, 0, 1024 + kAdHeight, 768 + kPickerHeight + kBannerHeight);
 	NSRect contentRect = NSMakeRect(0, 0, windowFrame.size.width, windowFrame.size.height - toolbarHeight);
 	contentView = [[NSView alloc] initWithFrame:contentRect];
+    
     int drawingViewWidth = contentRect.size.width - kPickerHeight;
-    if (drawingViewWidth < kDocumentWidth) {
-        drawingViewWidth = kDocumentWidth;
-    }
+//    if (drawingViewWidth < kDocumentWidth) {
+//        drawingViewWidth = kDocumentWidth;
+//    }
     int drawingViewHeight = contentRect.size.height - kBannerHeight - kAdHeight;
-    if (drawingViewHeight < kDocumentHeight) {
-        drawingViewHeight = kDocumentHeight;
-    }
+//    if (drawingViewHeight < kDocumentHeight) {
+//        drawingViewHeight = kDocumentHeight;
+//    }
 	drawingView = [[MainPaintingView alloc] initWithFrame:NSMakeRect(0, kAdHeight,  drawingViewWidth, drawingViewHeight)];
 	
 #if LITE
@@ -121,8 +185,12 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	
 #endif
 	
-	self.picker = [[Picker alloc] initWithFrame:NSMakeRect(contentRect.size.width - kPickerHeight, -(kPickerWidth + kBannerHeight - contentRect.size.height), kPickerHeight, contentRect.size.height - kBannerHeight + (kPickerWidth + kBannerHeight - contentRect.size.height))];
-	[self.picker setHorizontal:FALSE];
+	//self.picker = [[Picker alloc] initWithFrame:NSMakeRect(contentRect.size.width - kPickerHeight, -(kPickerWidth + kBannerHeight - contentRect.size.height), kPickerHeight, contentRect.size.height - kBannerHeight + (kPickerWidth + kBannerHeight - contentRect.size.height))];
+	//[self.picker setHorizontal:FALSE];
+    
+    //
+    [self adjustPickerWindowHorizontal:isBrushSelectorHorizontal];
+    //
 	
 	bannerView = [[NSImageView alloc] initWithFrame:NSMakeRect(0, contentRect.size.height - kBannerHeight, contentRect.size.width, kBannerHeight)];
 	[bannerView setImage:[NSImage imageNamed:@"Gray-background2.gif"]];
@@ -148,7 +216,7 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	
 	[contentView addSubview:drawingView];
 	[contentView addSubview:customColorPickerBackground];
-	[contentView addSubview:self.picker];
+	//[contentView addSubview:self.picker];
 	[contentView addSubview:bannerView];
 	[window setContentView:contentView];
 	[window makeFirstResponder: contentView];
@@ -203,20 +271,20 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 #endif
 		
 		[customColorPickerBackground setFrame:NSMakeRect(contentRect.size.width - kPickerHeight, 0, kPickerHeight, contentRect.size.height - kBannerHeight)];
-		[self.picker setFrame:NSMakeRect(contentRect.size.width - kPickerHeight, -(kPickerWidth + kBannerHeight - contentRect.size.height), kPickerHeight, contentRect.size.height - kBannerHeight + (kPickerWidth + kBannerHeight- contentRect.size.height))];
-		[self.picker setHorizontal:FALSE];
+		//[self.picker setFrame:NSMakeRect(contentRect.size.width - kPickerHeight, -(kPickerWidth + kBannerHeight - contentRect.size.height), kPickerHeight, contentRect.size.height - kBannerHeight + (kPickerWidth + kBannerHeight- contentRect.size.height))];
+		//[self.picker setHorizontal:FALSE];
 		[connectedDeviceName setFrame:NSMakeRect(0, -7, contentRect.size.width, kBannerHeight)];
 		[bannerView setFrame:NSMakeRect(0, contentRect.size.height - kBannerHeight, contentRect.size.width, kBannerHeight)];
         
-        int drawingViewWidth = contentRect.size.width - kPickerHeight;
-        if (drawingViewWidth < kDocumentWidth) {
-            drawingViewWidth = kDocumentWidth;
-        }
-        int drawingViewHeight = contentRect.size.height - kBannerHeight - kAdHeight;
-        if (drawingViewHeight < kDocumentHeight) {
-            drawingViewHeight = kDocumentHeight;
-        }
-        [drawingView setFrame:NSMakeRect(0, kAdHeight,  drawingViewWidth, drawingViewHeight)];
+//        int drawingViewWidth = contentRect.size.width - kPickerHeight;
+//        if (drawingViewWidth < kDocumentWidth) {
+//            drawingViewWidth = kDocumentWidth;
+//        }
+//        int drawingViewHeight = contentRect.size.height - kBannerHeight - kAdHeight;
+//        if (drawingViewHeight < kDocumentHeight) {
+//            drawingViewHeight = kDocumentHeight;
+//        }
+//        [drawingView setFrame:NSMakeRect(0, kAdHeight,  drawingViewWidth, drawingViewHeight)];
 		
 	} else {
 		
@@ -226,13 +294,15 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 #endif
 		
 		[customColorPickerBackground setFrame:NSMakeRect(0, kAdHeight, contentRect.size.width, kPickerHeight)];
-		[self.picker setFrame:NSMakeRect(0, kAdHeight, contentRect.size.width, kPickerHeight)];
-		[self.picker setHorizontal:TRUE];
+		//[self.picker setFrame:NSMakeRect(0, kAdHeight, contentRect.size.width, kPickerHeight)];
+		//[self.picker setHorizontal:TRUE];
 		[connectedDeviceName setFrame:NSMakeRect(0, -7, contentRect.size.width, kBannerHeight)];
 		[bannerView setFrame:NSMakeRect(0, contentRect.size.height - kBannerHeight, contentRect.size.width, kBannerHeight)];
 		[drawingView setFrame:NSMakeRect(0, kPickerHeight + kAdHeight, contentRect.size.width ,contentRect.size.height - kBannerHeight - kPickerHeight - kAdHeight)];
 		
 	}
+    
+    [self adjustPickerWindowHorizontal:isBrushSelectorHorizontal];
 
 }
 
@@ -1285,34 +1355,36 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 }
 
 -(IBAction)brushSelectorReposition:(id)sender {
-	if (isBrushSelectorHorizontal) {
+//	if (isBrushSelectorHorizontal) {
+//		
+//		isBrushSelectorHorizontal = !isBrushSelectorHorizontal;
+//
+//		DLog(@"change to vertical brush selector");
 		
-		isBrushSelectorHorizontal = !isBrushSelectorHorizontal;
-
-		DLog(@"change to vertical brush selector");
-		
-		[[self window] setFrame:NSMakeRect([self window].frame.origin.x, 
-										   [self window].frame.origin.y + kPickerHeight, 
-										   [self window].frame.size.width + kPickerHeight, 
-										   [self window].frame.size.height -kPickerHeight) 
-						display:YES animate:NO];
+//		[[self window] setFrame:NSMakeRect([self window].frame.origin.x, 
+//										   [self window].frame.origin.y + kPickerHeight, 
+//										   [self window].frame.size.width + kPickerHeight, 
+//										   [self window].frame.size.height -kPickerHeight) 
+//						display:YES animate:NO];
 		
 		// - (void)windowDidResize:(NSNotification *)notification will handle sub view repositioning
 		
-	} else {
-		
-		isBrushSelectorHorizontal = !isBrushSelectorHorizontal;
+//	} else {
+//		
+//		isBrushSelectorHorizontal = !isBrushSelectorHorizontal;
 
 		DLog(@"change to horizontal brush selector");
-		[[self window] setFrame:NSMakeRect([self window].frame.origin.x, 
-										   [self window].frame.origin.y - kPickerHeight,
-										   [self window].frame.size.width - kPickerHeight, 
-										   [self window].frame.size.height + kPickerHeight) 
-						display:YES animate:NO];
+//		[[self window] setFrame:NSMakeRect([self window].frame.origin.x, 
+//										   [self window].frame.origin.y - kPickerHeight,
+//										   [self window].frame.size.width - kPickerHeight, 
+//										   [self window].frame.size.height + kPickerHeight) 
+//						display:YES animate:NO];
 		
 		// - (void)windowDidResize:(NSNotification *)notification will handle sub view repositioning
 		
-	}
+//	}
+    isBrushSelectorHorizontal = !isBrushSelectorHorizontal;
+    [self adjustPickerWindowHorizontal:isBrushSelectorHorizontal];
     [self updateCustomColorPickerLocation];
 }
 
