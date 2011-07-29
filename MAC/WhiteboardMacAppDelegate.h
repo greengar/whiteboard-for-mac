@@ -81,6 +81,7 @@ typedef enum {
 	CMColorPicker           * customColorPicker;
 	MAAttachedWindow        * customColorPickerWindow;
     MAAttachedWindow        * pickerWindow;
+    MAAttachedWindow        * bannerWindow;
 	
 	MainPaintingView        * drawingView;
 	ToolType                _toolMode;
@@ -144,7 +145,7 @@ typedef enum {
 - (void)updateCustomColorPickerLocation;
 - (void)closeCustomColorPickerLocation;
 - (void)adjustPickerWindowHorizontal:(BOOL)horizontal;
-
+- (void)adjustBannerWindowHorizontal:(BOOL)horizontal;
 // Toolbar button
 -(IBAction)networking:(id)sender;
 -(IBAction)save:(id)sender;

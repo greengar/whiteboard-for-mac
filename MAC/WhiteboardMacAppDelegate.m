@@ -61,6 +61,53 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	//[[BrushPickerPanel class] poseAsClass:[NSColorPanel class]];
 }
 
+- (void)adjustBannerWindowHorizontal:(BOOL)horizontal {
+    int mainWindowWidth = [self window].frame.size.width;
+    int mainWindowHeight = [self window].frame.size.height;
+    int mainWindowLeft = [self window].frame.origin.x;
+    int mainWindowBottom = [self window].frame.origin.y;
+    int bannerWindowWidth = mainWindowWidth;
+    int bannerWindowHeight = kBannerHeight;
+    int bannerWindowLeft = mainWindowLeft;
+    int bannerWindowTop = mainWindowBottom + mainWindowHeight - toolbarHeight;
+    int bannerViewWidth = bannerWindowWidth;
+    int bannerViewHeight = bannerWindowHeight;
+    int bannerViewLeft = 0;
+    int bannerViewBottom = 0;
+    if(!bannerView) {
+        bannerView = [[NSImageView alloc] initWithFrame:NSMakeRect(bannerViewLeft , bannerViewBottom, bannerViewWidth, bannerViewHeight)];
+        [bannerView setImage:[NSImage imageNamed:@"Gray-background2.gif"]];
+        [bannerView setImageScaling:NSImageScaleAxesIndependently];
+        
+        if(!connectedDeviceName) {
+            connectedDeviceName = [[NSText alloc] initWithFrame:NSMakeRect(0, -7, bannerWindowWidth, bannerWindowHeight)];
+            [connectedDeviceName setAlignment:NSCenterTextAlignment];
+            [connectedDeviceName setVerticallyResizable:YES];
+            [connectedDeviceName setTextColor:[NSColor whiteColor]];
+            [connectedDeviceName setString:@"Your Whiteboard"];
+            [connectedDeviceName setEditable:NO];
+            [connectedDeviceName setSelectable:NO];
+            [connectedDeviceName setBackgroundColor:[NSColor clearColor]];
+        }
+        [bannerView addSubview:connectedDeviceName];
+    } else {
+        [bannerView setFrame:NSMakeRect(bannerViewLeft , bannerViewBottom, bannerViewWidth, bannerViewHeight)];
+    }
+    if(!bannerWindow) {
+        bannerWindow = [[NSWindow alloc] init];
+        [bannerWindow setDelegate:self];
+        [bannerWindow setStyleMask:NSBorderlessWindowMask];
+        [bannerWindow setContentView:bannerView];
+        [bannerWindow setAcceptsMouseMovedEvents: YES];
+        [bannerWindow setReleasedWhenClosed:NO];
+        [bannerWindow setMovable:NO];
+        [window addChildWindow:bannerWindow ordered:NSWindowAbove];
+        [window orderFrontRegardless];
+    }
+    [bannerWindow setContentSize:NSMakeSize(bannerWindowWidth, bannerWindowHeight)];
+    [bannerWindow setFrameTopLeftPoint:NSMakePoint(bannerWindowLeft, bannerWindowTop)];
+}
+
 - (void)adjustPickerWindowHorizontal:(BOOL)horizontal {
     //horizontal = YES;
     int mainWindowWidth = [self window].frame.size.width;
@@ -74,7 +121,7 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
     int pickerViewWidth = 0;
     int pickerViewHeight = 0;
     int pickerViewLeft = 0;
-    int pickerViewTop = 0;
+    int pickerViewBottom = 0;
     if(horizontal) {
         pickerWindowWidth = mainWindowWidth;
         pickerWindowHeight = kPickerHeight;
@@ -92,14 +139,14 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
         pickerWindowLeft = mainWindowLeft + mainWindowWidth - pickerWindowWidth;
         pickerWindowTop = mainWindowBottom + pickerWindowHeight + kPickerWindowResizeOffset;
         
-        pickerViewTop = pickerWindowHeight - kPickerWidth;
+        pickerViewBottom = pickerWindowHeight - kPickerWidth;
         pickerViewWidth = kPickerHeight;
         pickerViewHeight = kPickerWidth;
     }
     if(!self.picker) {
-        self.picker = [[Picker alloc] initWithFrame:NSMakeRect(pickerViewLeft, pickerViewTop, pickerViewWidth, pickerViewHeight)];
+        self.picker = [[Picker alloc] initWithFrame:NSMakeRect(pickerViewLeft, pickerViewBottom, pickerViewWidth, pickerViewHeight)];
     } else {
-        [self.picker setFrame:NSMakeRect(pickerViewLeft, pickerViewTop, pickerViewWidth, pickerViewHeight)];
+        [self.picker setFrame:NSMakeRect(pickerViewLeft, pickerViewBottom, pickerViewWidth, pickerViewHeight)];
     }
     [self.picker setHorizontal:horizontal];
     if(!pickerWindow) {
@@ -111,7 +158,6 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
         [pickerWindow setReleasedWhenClosed:NO];
         [pickerWindow setMovable:NO];
         [window addChildWindow:pickerWindow ordered:NSWindowAbove];
-        [pickerWindow setContentSize:self.picker.frame.size];
         [window orderFrontRegardless];
     }
     if(pickerWindowHeight > pickerViewHeight) {
@@ -162,13 +208,13 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	contentView = [[NSView alloc] initWithFrame:contentRect];
     
     int drawingViewWidth = contentRect.size.width - kPickerHeight;
-//    if (drawingViewWidth < kDocumentWidth) {
-//        drawingViewWidth = kDocumentWidth;
-//    }
+    if (drawingViewWidth < kDocumentWidth) {
+        drawingViewWidth = kDocumentWidth;
+    }
     int drawingViewHeight = contentRect.size.height - kBannerHeight - kAdHeight;
-//    if (drawingViewHeight < kDocumentHeight) {
-//        drawingViewHeight = kDocumentHeight;
-//    }
+    if (drawingViewHeight < kDocumentHeight) {
+        drawingViewHeight = kDocumentHeight;
+    }
 	drawingView = [[MainPaintingView alloc] initWithFrame:NSMakeRect(0, kAdHeight,  drawingViewWidth, drawingViewHeight)];
 	
 #if LITE
@@ -190,25 +236,38 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
     
     //
     [self adjustPickerWindowHorizontal:isBrushSelectorHorizontal];
+    [self adjustBannerWindowHorizontal:isBrushSelectorHorizontal];
     //
 	
-	bannerView = [[NSImageView alloc] initWithFrame:NSMakeRect(0, contentRect.size.height - kBannerHeight, contentRect.size.width, kBannerHeight)];
-	[bannerView setImage:[NSImage imageNamed:@"Gray-background2.gif"]];
-	[bannerView setImageScaling:NSImageScaleAxesIndependently];
+//	bannerView = [[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, contentRect.size.width, kBannerHeight)];
+//	[bannerView setImage:[NSImage imageNamed:@"Gray-background2.gif"]];
+//	[bannerView setImageScaling:NSImageScaleAxesIndependently];
+//    
+//    bannerWindow = [[NSWindow alloc] init];
+//    [bannerWindow setDelegate:self];
+//    [bannerWindow setStyleMask:NSBorderlessWindowMask];
+//    [bannerWindow setContentView:bannerView];
+//    [bannerWindow setAcceptsMouseMovedEvents: YES];
+//    [bannerWindow setReleasedWhenClosed:NO];
+//    [bannerWindow setMovable:NO];
+//    [window addChildWindow:bannerWindow ordered:NSWindowAbove];
+//    [bannerWindow setContentSize:bannerView.frame.size];
+//    [bannerWindow setFrameTopLeftPoint:NSMakePoint(contentRect.origin.x, contentRect.size.height - toolbarHeight - kBannerHeight)];
+//    [window orderFrontRegardless];
 	
 	customColorPickerBackground = [[NSImageView alloc] initWithFrame:NSMakeRect(contentRect.size.width - kPickerHeight, 0, kPickerHeight, contentRect.size.height)];
 	[customColorPickerBackground setImage:[NSImage imageNamed:@"Gray-background2.gif"]];
 	[customColorPickerBackground setImageScaling:NSImageScaleAxesIndependently];
 	
-	connectedDeviceName = [[NSText alloc] initWithFrame:NSMakeRect(0, -7, contentRect.size.width, kBannerHeight)];
-	[connectedDeviceName setAlignment:NSCenterTextAlignment];
-	[connectedDeviceName setVerticallyResizable:YES];
-	[connectedDeviceName setTextColor:[NSColor whiteColor]];
-	[connectedDeviceName setString:@"Your Whiteboard"];
-	[connectedDeviceName setEditable:NO];
-	[connectedDeviceName setSelectable:NO];
-	[connectedDeviceName setBackgroundColor:[NSColor clearColor]];
-	[bannerView addSubview:connectedDeviceName];
+//	connectedDeviceName = [[NSText alloc] initWithFrame:NSMakeRect(0, -7, contentRect.size.width, kBannerHeight)];
+//	[connectedDeviceName setAlignment:NSCenterTextAlignment];
+//	[connectedDeviceName setVerticallyResizable:YES];
+//	[connectedDeviceName setTextColor:[NSColor whiteColor]];
+//	[connectedDeviceName setString:@"Your Whiteboard"];
+//	[connectedDeviceName setEditable:NO];
+//	[connectedDeviceName setSelectable:NO];
+//	[connectedDeviceName setBackgroundColor:[NSColor clearColor]];
+//	[bannerView addSubview:connectedDeviceName];
 	
 #if LITE
 	[contentView addSubview:adContainerView1];
@@ -217,7 +276,7 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	[contentView addSubview:drawingView];
 	[contentView addSubview:customColorPickerBackground];
 	//[contentView addSubview:self.picker];
-	[contentView addSubview:bannerView];
+	//[contentView addSubview:bannerView];
 	[window setContentView:contentView];
 	[window makeFirstResponder: contentView];
 
@@ -262,7 +321,7 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	NSRect contentRect = NSMakeRect(0, 0, windowFrame.size.width, windowFrame.size.height - toolbarHeight);
 
 	[contentView setFrame:contentRect];
-	
+    
 	if (isBrushSelectorHorizontal == FALSE) {
 		
 #if LITE
@@ -276,15 +335,15 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 		[connectedDeviceName setFrame:NSMakeRect(0, -7, contentRect.size.width, kBannerHeight)];
 		[bannerView setFrame:NSMakeRect(0, contentRect.size.height - kBannerHeight, contentRect.size.width, kBannerHeight)];
         
-//        int drawingViewWidth = contentRect.size.width - kPickerHeight;
-//        if (drawingViewWidth < kDocumentWidth) {
-//            drawingViewWidth = kDocumentWidth;
-//        }
-//        int drawingViewHeight = contentRect.size.height - kBannerHeight - kAdHeight;
-//        if (drawingViewHeight < kDocumentHeight) {
-//            drawingViewHeight = kDocumentHeight;
-//        }
-//        [drawingView setFrame:NSMakeRect(0, kAdHeight,  drawingViewWidth, drawingViewHeight)];
+        int drawingViewWidth = contentRect.size.width - kPickerHeight;
+        if (drawingViewWidth < kDocumentWidth) {
+            drawingViewWidth = kDocumentWidth;
+        }
+        int drawingViewHeight = contentRect.size.height - kBannerHeight - kAdHeight;
+        if (drawingViewHeight < kDocumentHeight) {
+            drawingViewHeight = kDocumentHeight;
+        }
+        [drawingView setFrame:NSMakeRect(0, kAdHeight,  drawingViewWidth, drawingViewHeight)];
 		
 	} else {
 		
@@ -298,11 +357,21 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 		//[self.picker setHorizontal:TRUE];
 		[connectedDeviceName setFrame:NSMakeRect(0, -7, contentRect.size.width, kBannerHeight)];
 		[bannerView setFrame:NSMakeRect(0, contentRect.size.height - kBannerHeight, contentRect.size.width, kBannerHeight)];
-		[drawingView setFrame:NSMakeRect(0, kPickerHeight + kAdHeight, contentRect.size.width ,contentRect.size.height - kBannerHeight - kPickerHeight - kAdHeight)];
+        
+        int drawingViewWidth = contentRect.size.width;
+        if (drawingViewWidth < kDocumentWidth) {
+            drawingViewWidth = kDocumentWidth;
+        }
+        int drawingViewHeight = contentRect.size.height - kBannerHeight - kAdHeight - kPickerHeight;
+        if (drawingViewHeight < kDocumentHeight) {
+            drawingViewHeight = kDocumentHeight;
+        }
+		[drawingView setFrame:NSMakeRect(0, kPickerHeight + kAdHeight, drawingViewWidth, drawingViewHeight)];
 		
 	}
     
     [self adjustPickerWindowHorizontal:isBrushSelectorHorizontal];
+    [self adjustBannerWindowHorizontal:isBrushSelectorHorizontal];
 
 }
 
@@ -1385,6 +1454,7 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 //	}
     isBrushSelectorHorizontal = !isBrushSelectorHorizontal;
     [self adjustPickerWindowHorizontal:isBrushSelectorHorizontal];
+    [self adjustBannerWindowHorizontal:isBrushSelectorHorizontal];
     [self updateCustomColorPickerLocation];
 }
 
