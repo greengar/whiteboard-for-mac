@@ -82,6 +82,7 @@ typedef enum {
 	MAAttachedWindow        * customColorPickerWindow;
     MAAttachedWindow        * pickerWindow;
     MAAttachedWindow        * bannerWindow;
+    MAAttachedWindow        * promoAdsWindow;
 	
 	MainPaintingView        * drawingView;
 	ToolType                _toolMode;
@@ -146,6 +147,8 @@ typedef enum {
 - (void)closeCustomColorPickerLocation;
 - (void)adjustPickerWindowHorizontal:(BOOL)horizontal;
 - (void)adjustBannerWindowHorizontal:(BOOL)horizontal;
+- (void)adjustPromoAdsWindowHorizontal:(BOOL)horizontal;
+- (void)closePromoAdsWindow;
 // Toolbar button
 -(IBAction)networking:(id)sender;
 -(IBAction)save:(id)sender;

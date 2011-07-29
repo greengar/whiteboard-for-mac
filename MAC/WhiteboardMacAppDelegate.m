@@ -21,6 +21,9 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 #define kBannerHeight			25
 #define kDefaultOpacityValue	0.75
 
+#define kPromoAdsWidth  320
+#define kPromoAdsHeight 480
+
 #if LITE
 	// this is the width a single ad, but the ad container actually shows up to 3-4 ads
 	#define kAdWidth  320
@@ -102,10 +105,57 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
         [bannerWindow setReleasedWhenClosed:NO];
         [bannerWindow setMovable:NO];
         [window addChildWindow:bannerWindow ordered:NSWindowAbove];
-        [window orderFrontRegardless];
+        //[window orderFrontRegardless];
     }
     [bannerWindow setContentSize:NSMakeSize(bannerWindowWidth, bannerWindowHeight)];
     [bannerWindow setFrameTopLeftPoint:NSMakePoint(bannerWindowLeft, bannerWindowTop)];
+}
+
+- (void)closePromoAdsWindow {
+    [window removeChildWindow:promoAdsWindow];
+    [promoAdsWindow orderOut:self];
+    [promoAdsWindow release];
+    promoAdsWindow = nil;
+}
+
+- (void)adjustPromoAdsWindowHorizontal:(BOOL)horizontal {
+    int mainWindowWidth = [self window].frame.size.width;
+    int mainWindowHeight = [self window].frame.size.height;
+    int mainWindowLeft = [self window].frame.origin.x;
+    int mainWindowBottom = [self window].frame.origin.y;
+    int promoAdsWindowWidth = kPromoAdsWidth;
+    int promoAdsWindowHeight = kPromoAdsHeight;
+    int promoAdsWindowLeft = mainWindowLeft + mainWindowWidth / 2 - promoAdsWindowWidth / 2;
+    int promoAdsWindowTop = (mainWindowBottom + mainWindowHeight) - mainWindowHeight / 2 + promoAdsWindowHeight / 2;
+    promoAdsWindowTop = mainWindowBottom + mainWindowHeight - toolbarHeight - kBannerHeight;
+    int promoAdsViewWidth = promoAdsWindowWidth;
+    int promoAdsViewHeight = promoAdsWindowHeight;
+    int promoAdsViewLeft = 0;
+    int promoAdsViewBottom = 0;
+    
+    if(!promoAdsWindow) {
+        promoAdsWindow = [[NSWindow alloc] init];
+        [promoAdsWindow setDelegate:self];
+        [promoAdsWindow setStyleMask:NSNoTitle];
+//        [promoAdsWindow setBorderColor:[NSColor colorWithDeviceRed:54.0/255 green:54.0/255 blue:54.0/255 alpha:1.0]];
+//        [promoAdsWindow setBorderWidth:2];
+        // FOR TEST:
+        NSImageView *imageView = [[NSImageView alloc] initWithFrame:NSMakeRect(promoAdsViewLeft, promoAdsViewBottom, promoAdsViewWidth, promoAdsViewHeight)];
+        [imageView setImage:[NSImage imageNamed:@"PromoAds.png"]];
+        [imageView setImageScaling:NSImageScaleAxesIndependently];
+        [promoAdsWindow setContentView:imageView];
+        // END FOR TEST
+        //[promoAdsWindow setStyleMask:NSTitledWindowMask|NSClosableWindowMask];
+        //[promoAdsWindow setContentView:bannerView];
+        [promoAdsWindow setAcceptsMouseMovedEvents: YES];
+        [promoAdsWindow setReleasedWhenClosed:YES];
+        [promoAdsWindow setMovable:NO];
+        [promoAdsWindow setBackgroundColor:[NSColor colorWithDeviceRed:54.0/255 green:54.0/255 blue:54.0/255 alpha:1.0]];
+        [bannerWindow addChildWindow:promoAdsWindow ordered:NSWindowAbove];
+        [promoAdsWindow orderFrontRegardless];
+    }
+    [promoAdsWindow setContentSize:NSMakeSize(promoAdsWindowWidth, promoAdsWindowHeight)];
+    [promoAdsWindow setFrameTopLeftPoint:NSMakePoint(promoAdsWindowLeft, promoAdsWindowTop)];    
 }
 
 - (void)adjustPickerWindowHorizontal:(BOOL)horizontal {
@@ -175,7 +225,7 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
         [pickerWindow setMovable:NO];
 
         [window addChildWindow:pickerWindow ordered:NSWindowAbove];
-        [window orderFrontRegardless];
+        //[window orderFrontRegardless];
     }
     
     [pickerWindow setContentSize:NSMakeSize(pickerWindowWidth, pickerWindowHeight)];
@@ -249,6 +299,9 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
     //
     [self adjustPickerWindowHorizontal:isBrushSelectorHorizontal];
     [self adjustBannerWindowHorizontal:isBrushSelectorHorizontal];
+    [self adjustPromoAdsWindowHorizontal:isBrushSelectorHorizontal];
+    [self closePromoAdsWindow];
+    [self closePromoAdsWindow];
     //
 	
 //	bannerView = [[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, contentRect.size.width, kBannerHeight)];
@@ -384,7 +437,7 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
     
     [self adjustPickerWindowHorizontal:isBrushSelectorHorizontal];
     [self adjustBannerWindowHorizontal:isBrushSelectorHorizontal];
-    
+    [self adjustPromoAdsWindowHorizontal:isBrushSelectorHorizontal];
     [self updateCustomColorPickerLocation];
 
 }
