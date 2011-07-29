@@ -211,6 +211,10 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		B8D4A8E913E29BCB00E5147F /* How to add GreengarPromoAds.rtf in Resources */ = {isa = PBXBuildFile; fileRef = B8D4A8E813E29BCB00E5147F /* How to add GreengarPromoAds.rtf */; };
+		B8D4A9A513E29E3F00E5147F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B8D4A9A413E29E3F00E5147F /* libz.dylib */; };
+		B8D4A9A713E29E5000E5147F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8D4A9A613E29E5000E5147F /* SystemConfiguration.framework */; };
+		B8D4A9A913E2B1A900E5147F /* PromoAds.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D4A9A813E2B1A900E5147F /* PromoAds.png */; };
 		CD4B86BA1356DE2C00BACAED /* ZoomIn_ToolBar.png in Resources */ = {isa = PBXBuildFile; fileRef = CD4B86B61356DE2B00BACAED /* ZoomIn_ToolBar.png */; };
 		CD4B86BB1356DE2C00BACAED /* ZoomIn_ToolBar.png in Resources */ = {isa = PBXBuildFile; fileRef = CD4B86B61356DE2B00BACAED /* ZoomIn_ToolBar.png */; };
 		CD4B86BC1356DE2C00BACAED /* ZoomOut_ToolBar.png in Resources */ = {isa = PBXBuildFile; fileRef = CD4B86B71356DE2B00BACAED /* ZoomOut_ToolBar.png */; };
@@ -422,6 +426,10 @@
 		69B5207312F2976F002C5D1D /* WhiteboardPro-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WhiteboardPro-Info.plist"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Whiteboard-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Whiteboard-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* WhiteboardMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhiteboardMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8D4A8E813E29BCB00E5147F /* How to add GreengarPromoAds.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; name = "How to add GreengarPromoAds.rtf"; path = "../../../greengar/GreengarPromoAds/How to add GreengarPromoAds.rtf"; sourceTree = "<group>"; };
+		B8D4A9A413E29E3F00E5147F /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		B8D4A9A613E29E5000E5147F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		B8D4A9A813E2B1A900E5147F /* PromoAds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PromoAds.png; path = ColorPicker/PromoAds.png; sourceTree = "<group>"; };
 		CD4B86B61356DE2B00BACAED /* ZoomIn_ToolBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ZoomIn_ToolBar.png; sourceTree = "<group>"; };
 		CD4B86B71356DE2B00BACAED /* ZoomOut_ToolBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ZoomOut_ToolBar.png; sourceTree = "<group>"; };
 		CD4B86BE1356DEAC00BACAED /* Pan_ToolBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pan_ToolBar.png; sourceTree = "<group>"; };
@@ -483,6 +491,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8D4A9A713E29E5000E5147F /* SystemConfiguration.framework in Frameworks */,
+				B8D4A9A513E29E3F00E5147F /* libz.dylib in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				2796CB351282A5970033DACA /* OpenGL.framework in Frameworks */,
 				2796CD371283CABB0033DACA /* AppKit.framework in Frameworks */,
@@ -496,6 +506,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				B8D4A8E813E29BCB00E5147F /* How to add GreengarPromoAds.rtf */,
 				FCC625F412ED868E00A7F3FE /* Collaboration */,
 				62B2125312ED7653006C241B /* BuySellAds */,
 				628ADF0E12D313C2008EA025 /* Controllers */,
@@ -652,6 +663,8 @@
 		29B97314FDCFA39411CA2CEA /* WhiteboardMac */ = {
 			isa = PBXGroup;
 			children = (
+				B8D4A9A613E29E5000E5147F /* SystemConfiguration.framework */,
+				B8D4A9A413E29E3F00E5147F /* libz.dylib */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -674,6 +687,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B8D4A9A813E2B1A900E5147F /* PromoAds.png */,
 				69542CA112C912C90085ED03 /* Help */,
 				69542CDC12C9191F0085ED03 /* Credits.html */,
 				27C795CC12C3A7BA00A3AA68 /* Orange-background.jpg */,
@@ -951,6 +965,7 @@
 				Japanese,
 				French,
 				German,
+				en,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* WhiteboardMac */;
 			projectDirPath = "";
@@ -1072,6 +1087,8 @@
 				CD81CAAE136664A900CD68C5 /* ZoomIn_Cursor.png in Resources */,
 				CD81CAB0136664A900CD68C5 /* ZoomOut_Cursor.png in Resources */,
 				2711697313E0046B0081E209 /* Source Code License.rtf in Resources */,
+				B8D4A8E913E29BCB00E5147F /* How to add GreengarPromoAds.rtf in Resources */,
+				B8D4A9A913E2B1A900E5147F /* PromoAds.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
