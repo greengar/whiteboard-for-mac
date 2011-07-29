@@ -133,7 +133,7 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
         pickerViewWidth = kPickerHeight;
         pickerViewHeight = kPickerWidth;
         pickerWindowWidth = kPickerHeight;
-        pickerWindowHeight = mainWindowHeight - toolbarHeight - kPickerWindowResizeOffset;
+        pickerWindowHeight = mainWindowHeight - toolbarHeight - kBannerHeight - kPickerWindowResizeOffset;
                 
     }
     
