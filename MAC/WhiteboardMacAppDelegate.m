@@ -119,6 +119,7 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 }
 
 - (void)adjustPromoAdsWindowHorizontal:(BOOL)horizontal {
+    return;
     int mainWindowWidth = [self window].frame.size.width;
     int mainWindowHeight = [self window].frame.size.height;
     int mainWindowLeft = [self window].frame.origin.x;
