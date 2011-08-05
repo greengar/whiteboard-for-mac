@@ -23,6 +23,7 @@
 	id <GSMacAlertDelegate> _delegate;
 	
 	NSWindow *_window;
+    NSWindow *parentWindow;
 	NSTextField *_titleField;
 	NSTextField *_messageField;
 	
@@ -32,6 +33,7 @@
 @property (nonatomic, assign) NSInteger tag;
 @property (nonatomic, assign) id <GSMacAlertDelegate> delegate;
 @property (nonatomic, retain) IBOutlet NSWindow *window;
+@property (nonatomic, retain) NSWindow *parentWindow;
 
 @property (nonatomic, retain) IBOutlet NSTextField *titleField;
 @property (nonatomic, retain) IBOutlet NSTextField *messageField;

@@ -10,7 +10,7 @@
 #import "WhiteboardMacAppDelegate.h"
 
 @implementation GSMacAlert
-@synthesize tag, delegate = _delegate, window = _window;
+@synthesize tag, delegate = _delegate, window = _window, parentWindow;
 @synthesize messageField = _messageField, titleField = _titleField;
 @synthesize defaultButton = _defaultButton, alternativeButton = _alternativeButton;
 
@@ -67,6 +67,8 @@
 	//	[self setShowsHelp:NO];
 	//	[self setDelegate:nil];	
 	//KONG: will release when dismissed 
+    
+    self.parentWindow = window;
 	[self retain];
 	[NSApp beginSheet:self.window
 	   modalForWindow:window
@@ -100,6 +102,8 @@
 	[NSApp endSheet:[self window]];
 //	[[self window] orderOut:AppDelegate.window];	
 	[[self window] orderOut:nil];
+    
+    [self.parentWindow becomeKeyWindow];
 	if ([self.delegate respondsToSelector:@selector(alertView:didDismissWithButtonIndex:)]) {
 		[self.delegate alertView:self didDismissWithButtonIndex:buttonIndex];
 	}	
