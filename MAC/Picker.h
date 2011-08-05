@@ -25,7 +25,13 @@ alpha:1.0]
 
 #define kPickerHeight 76
 #define kPickerWidth  760
-#define kPickerWindowResizeOffset 10
+
+#ifdef AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER    
+    #define kPickerWindowResizeOffset 0
+#else
+    #define kPickerWindowResizeOffset 10
+#endif
+    
 
 @interface Picker : NSImageView  {
 	
