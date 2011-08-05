@@ -62,8 +62,10 @@ static Picker *sharedPicker = nil;
 		isHorizontal = YES;
 		
 		[self setAutoresizesSubviews:YES];
-		[self setImage:[NSImage imageNamed:@"Gray-background2.gif"]];
-		[self setImageScaling:NSImageScaleAxesIndependently];
+        
+        // Will not show Gradient Background anymore
+		//[self setImage:[NSImage imageNamed:@"Gray-background2.gif"]];
+		//[self setImageScaling:NSImageScaleAxesIndependently];
 		sharedPicker = self;
 		
 		tabTouchArray = [[NSMutableArray alloc] initWithCapacity:5]; // max 5 touches
