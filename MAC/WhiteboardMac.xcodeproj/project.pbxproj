@@ -87,11 +87,12 @@
 		62D807C5130D206A00DADBB6 /* Zoom_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 62D807C3130D206A00DADBB6 /* Zoom_Icon.png */; };
 		62E6C65E12EF420C0020379A /* Pan_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 62E6C65D12EF420C0020379A /* Pan_Icon.png */; };
 		62E6C6EE12EF4B840020379A /* NSCursor+CustomCursors.m in Sources */ = {isa = PBXBuildFile; fileRef = 62E6C6ED12EF4B840020379A /* NSCursor+CustomCursors.m */; };
+		6947BB8513EBE9F500913E41 /* Whiteboard.icns in Resources */ = {isa = PBXBuildFile; fileRef = 6947BB8413EBE9F500913E41 /* Whiteboard.icns */; };
+		6947BB8713EBE9FE00913E41 /* WhiteboardPro.icns in Resources */ = {isa = PBXBuildFile; fileRef = 6947BB8613EBE9FE00913E41 /* WhiteboardPro.icns */; };
 		69542CD512C912C90085ED03 /* Help in Resources */ = {isa = PBXBuildFile; fileRef = 69542CA112C912C90085ED03 /* Help */; };
 		69542CDD12C9191F0085ED03 /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = 69542CDC12C9191F0085ED03 /* Credits.html */; };
 		69542D5D12C9A1920085ED03 /* SelectedTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 69542D5C12C9A1920085ED03 /* SelectedTab.png */; };
 		6962F3F912CD006B0046E600 /* eraser_v3-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6962F3F812CD006B0046E600 /* eraser_v3-icon.png */; };
-		6974A93412C8968A003CB0CE /* Whiteboard.icns in Resources */ = {isa = PBXBuildFile; fileRef = 6974A93312C8968A003CB0CE /* Whiteboard.icns */; };
 		6977D65A12DC0F3A00D3ED2A /* Gnome-Edit-Redo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 6977D65912DC0F3A00D3ED2A /* Gnome-Edit-Redo.icns */; };
 		69805D1912CC79D300CE878C /* Gnome-Text-X-Preview.icns in Resources */ = {isa = PBXBuildFile; fileRef = 69805D1812CC79D300CE878C /* Gnome-Text-X-Preview.icns */; };
 		69805D3312CC98A200CE878C /* Gnome-Network-Wireless.icns in Resources */ = {isa = PBXBuildFile; fileRef = 69805D3212CC98A200CE878C /* Gnome-Network-Wireless.icns */; };
@@ -122,7 +123,6 @@
 		69B5201012F2976F002C5D1D /* Disconnected.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F8D22712C33710002E5CE1 /* Disconnected.png */; };
 		69B5201112F2976F002C5D1D /* Gray-background2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 27F8D27112C340FA002E5CE1 /* Gray-background2.gif */; };
 		69B5201212F2976F002C5D1D /* Orange-background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 27C795CC12C3A7BA00A3AA68 /* Orange-background.jpg */; };
-		69B5201312F2976F002C5D1D /* Whiteboard.icns in Resources */ = {isa = PBXBuildFile; fileRef = 6974A93312C8968A003CB0CE /* Whiteboard.icns */; };
 		69B5201412F2976F002C5D1D /* Help in Resources */ = {isa = PBXBuildFile; fileRef = 69542CA112C912C90085ED03 /* Help */; };
 		69B5201512F2976F002C5D1D /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = 69542CDC12C9191F0085ED03 /* Credits.html */; };
 		69B5201612F2976F002C5D1D /* SelectedTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 69542D5C12C9A1920085ED03 /* SelectedTab.png */; };
@@ -407,12 +407,13 @@
 		62E6C65D12EF420C0020379A /* Pan_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pan_Icon.png; sourceTree = "<group>"; };
 		62E6C6EC12EF4B840020379A /* NSCursor+CustomCursors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCursor+CustomCursors.h"; sourceTree = "<group>"; };
 		62E6C6ED12EF4B840020379A /* NSCursor+CustomCursors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCursor+CustomCursors.m"; sourceTree = "<group>"; };
+		6947BB8413EBE9F500913E41 /* Whiteboard.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Whiteboard.icns; path = Resources/AppIcons/Whiteboard.icns; sourceTree = "<group>"; };
+		6947BB8613EBE9FE00913E41 /* WhiteboardPro.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = WhiteboardPro.icns; path = Resources/AppIcons/WhiteboardPro.icns; sourceTree = "<group>"; };
 		69542CA112C912C90085ED03 /* Help */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Help; path = "Whiteboard Help/Help"; sourceTree = "<group>"; };
 		69542CDC12C9191F0085ED03 /* Credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Credits.html; sourceTree = "<group>"; };
 		69542D5C12C9A1920085ED03 /* SelectedTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SelectedTab.png; path = Resources/SelectedTab.png; sourceTree = "<group>"; };
 		6962F3F112CCFF840046E600 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		6962F3F812CD006B0046E600 /* eraser_v3-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "eraser_v3-icon.png"; sourceTree = "<group>"; };
-		6974A93312C8968A003CB0CE /* Whiteboard.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Whiteboard.icns; sourceTree = SOURCE_ROOT; };
 		6977D65912DC0F3A00D3ED2A /* Gnome-Edit-Redo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "Gnome-Edit-Redo.icns"; path = "Resources/Toolbar/Gnome-Edit-Redo.icns"; sourceTree = SOURCE_ROOT; };
 		69805D1812CC79D300CE878C /* Gnome-Text-X-Preview.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "Gnome-Text-X-Preview.icns"; path = "Resources/Toolbar/Gnome-Text-X-Preview.icns"; sourceTree = SOURCE_ROOT; };
 		69805D3212CC98A200CE878C /* Gnome-Network-Wireless.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "Gnome-Network-Wireless.icns"; path = "Resources/Toolbar/Gnome-Network-Wireless.icns"; sourceTree = SOURCE_ROOT; };
@@ -687,6 +688,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6947BB8413EBE9F500913E41 /* Whiteboard.icns */,
+				6947BB8613EBE9FE00913E41 /* WhiteboardPro.icns */,
 				B8D4A9A813E2B1A900E5147F /* PromoAds.png */,
 				69542CA112C912C90085ED03 /* Help */,
 				69542CDC12C9191F0085ED03 /* Credits.html */,
@@ -709,7 +712,6 @@
 				27CAEFE512B7C53D00461A87 /* iPadColorPickerTitleBar.png */,
 				27CAEFE612B7C53D00461A87 /* iPadColorSpectrumPublic.png */,
 				2796DA9C12A8BF96007FF6DC /* icon.png */,
-				6974A93312C8968A003CB0CE /* Whiteboard.icns */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
 				8D1107310486CEB800E47090 /* Whiteboard-Info.plist */,
@@ -1003,7 +1005,6 @@
 				69B5201012F2976F002C5D1D /* Disconnected.png in Resources */,
 				69B5201112F2976F002C5D1D /* Gray-background2.gif in Resources */,
 				69B5201212F2976F002C5D1D /* Orange-background.jpg in Resources */,
-				69B5201312F2976F002C5D1D /* Whiteboard.icns in Resources */,
 				69B5201412F2976F002C5D1D /* Help in Resources */,
 				69B5201512F2976F002C5D1D /* Credits.html in Resources */,
 				69B5201612F2976F002C5D1D /* SelectedTab.png in Resources */,
@@ -1031,6 +1032,7 @@
 				CD81CAAF136664A900CD68C5 /* ZoomIn_Cursor.png in Resources */,
 				CD81CAB1136664A900CD68C5 /* ZoomOut_Cursor.png in Resources */,
 				2711697413E0046B0081E209 /* Source Code License.rtf in Resources */,
+				6947BB8713EBE9FE00913E41 /* WhiteboardPro.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1059,7 +1061,6 @@
 				27F8D22812C33710002E5CE1 /* Disconnected.png in Resources */,
 				27F8D27212C340FA002E5CE1 /* Gray-background2.gif in Resources */,
 				27C795CD12C3A7BA00A3AA68 /* Orange-background.jpg in Resources */,
-				6974A93412C8968A003CB0CE /* Whiteboard.icns in Resources */,
 				69542CD512C912C90085ED03 /* Help in Resources */,
 				69542CDD12C9191F0085ED03 /* Credits.html in Resources */,
 				69542D5D12C9A1920085ED03 /* SelectedTab.png in Resources */,
@@ -1087,6 +1088,7 @@
 				CD81CAAE136664A900CD68C5 /* ZoomIn_Cursor.png in Resources */,
 				CD81CAB0136664A900CD68C5 /* ZoomOut_Cursor.png in Resources */,
 				2711697313E0046B0081E209 /* Source Code License.rtf in Resources */,
+				6947BB8513EBE9F500913E41 /* Whiteboard.icns in Resources */,
 				B8D4A8E913E29BCB00E5147F /* How to add GreengarPromoAds.rtf in Resources */,
 				B8D4A9A913E2B1A900E5147F /* PromoAds.png in Resources */,
 			);
