@@ -405,8 +405,10 @@ GLint zoomAutomaticCountdown = 1;
 		locationInView.x /= transforms.zoomLevel;
 		locationInView.y /= transforms.zoomLevel;
 		
-		NSPoint start2 = NSMakePoint(self.frame.size.height - pointInView.y, pointInView.x);
-		NSPoint end2 = NSMakePoint(self.frame.size.height - locationInView.y, locationInView.x);
+//		NSPoint start2 = NSMakePoint(self.frame.size.height - pointInView.y, pointInView.x);
+//		NSPoint end2 = NSMakePoint(self.frame.size.height - locationInView.y, locationInView.x);
+        NSPoint start2 = NSMakePoint(pointInView.x, pointInView.y);
+		NSPoint end2 = NSMakePoint(locationInView.x, locationInView.y);
 		
 		// Fix opacity range of Whiteboard MAC
 		CGFloat trueColorAndOpacity[4];
@@ -421,7 +423,27 @@ GLint zoomAutomaticCountdown = 1;
 		
 		[AppDelegate setTrueColorAndOpacity:trueColorAndOpacity];
 		
-		if (isBeing180Rotated) {
+        if([AppDelegate remoteDevice] != iPadDevice) {
+            start2 = start2 = NSMakePoint(self.frame.size.height - pointInView.y, pointInView.x);
+            end2 = NSMakePoint(self.frame.size.height - locationInView.y, locationInView.x);            //        start2.x -= kDocumentWidth / 2.0f;
+            //        start2.y -= kDocumentHeight / 2.0f;
+            //        float temp = start2.x;
+            //        start2.x = -1.0f * start2.y;
+            //        start2.y *= temp;
+            //        start2.x += kDocumentWidth / 2.0f;
+            //        start2.y += kDocumentHeight / 2.0f;
+            //        
+            //        end2.x -= kDocumentWidth / 2.0f;
+            //        end2.y -= kDocumentHeight / 2.0f;
+            //        temp = end2.x;
+            //        end2.x *= -1.0f * end2.y;
+            //        end2.y *= temp;
+            //        end2.x += kDocumentWidth / 2.0f;
+            //        end2.y += kDocumentHeight / 2.0f;
+            //
+        }
+        
+        if (isBeing180Rotated) {
 //			start2.x = kDocumentWidth - start2.x;	start2.y = kDocumentHeight - start2.y;
 //			end2.x = kDocumentWidth - end2.x;	end2.y = kDocumentHeight - end2.y;
             start2.x -= kDocumentWidth / 2.0f;
@@ -500,9 +522,26 @@ GLint zoomAutomaticCountdown = 1;
 //			}
 			
 			NSPoint p1 = locationInView;
+            
+//            if([AppDelegate remoteDevice] != iPadDevice) {
+//                p1.x -= kDocumentWidth / 2.0f;
+//                p1.y -= kDocumentHeight / 2.0f;
+//                float temp = p1.x;
+//                p1.x = -1.0f * p1.y;
+//                p1.y *= temp;
+//                p1.x += kDocumentWidth / 2.0f;
+//                p1.y += kDocumentHeight / 2.0f;
+//            }
 			
 			if (isBeing180Rotated) {
-				p1.x = kDocumentWidth - p1.x;	p1.y = kDocumentHeight - p1.y;
+				//p1.x = kDocumentWidth - p1.x;	p1.y = kDocumentHeight - p1.y;
+                p1.x -= kDocumentWidth / 2.0f;
+                p1.y -= kDocumentHeight / 2.0f;
+                p1.x *= -1.0f;
+                p1.y *= -1.0f;
+                p1.x += kDocumentWidth / 2.0f;
+                p1.y += kDocumentHeight / 2.0f;
+                
 			}
 			
 			NSPoint pp = NSMakePoint(self.frame.size.height - p1.y, p1.x);
@@ -708,14 +747,48 @@ GLint zoomAutomaticCountdown = 1;
 	
 
 	
-	NSPoint start2 = NSMakePoint(start.y, self.frame.size.height - start.x);
-	NSPoint end2 = NSMakePoint(end.y, self.frame.size.height - end.x);
+//	NSPoint start2 = NSMakePoint(start.y, self.frame.size.height - start.x);
+//	NSPoint end2 = NSMakePoint(end.y, self.frame.size.height - end.x);
+    NSPoint start2 = NSMakePoint(start.x, start.y);
+	NSPoint end2 = NSMakePoint(end.x, end.y);
 	
-	
+    if([AppDelegate remoteDevice] != iPadDevice) {
+        start2 = NSMakePoint(start.y, self.frame.size.height - start.x);
+        end2 = NSMakePoint(end.y, self.frame.size.height - end.x);
+//        start2.x -= kDocumentWidth / 2.0f;
+//        start2.y -= kDocumentHeight / 2.0f;
+//        float temp = start2.x;
+//        start2.x = -1.0f * start2.y;
+//        start2.y *= temp;
+//        start2.x += kDocumentWidth / 2.0f;
+//        start2.y += kDocumentHeight / 2.0f;
+//        
+//        end2.x -= kDocumentWidth / 2.0f;
+//        end2.y -= kDocumentHeight / 2.0f;
+//        temp = end2.x;
+//        end2.x *= -1.0f * end2.y;
+//        end2.y *= temp;
+//        end2.x += kDocumentWidth / 2.0f;
+//        end2.y += kDocumentHeight / 2.0f;
+//
+    }
 	
 	if (isBeing180Rotated) {
-		start2.x = kDocumentWidth - start2.x;	start2.y = kDocumentHeight - start2.y;
-		end2.x = kDocumentWidth - end2.x;	end2.y = kDocumentHeight - end2.y;
+//		start2.x = kDocumentWidth - start2.x;	start2.y = kDocumentHeight - start2.y;
+//		end2.x = kDocumentWidth - end2.x;	end2.y = kDocumentHeight - end2.y;
+        start2.x -= kDocumentWidth / 2.0f;
+        start2.y -= kDocumentHeight / 2.0f;
+        start2.x *= -1.0f;
+        start2.y *= -1.0f;
+        start2.x += kDocumentWidth / 2.0f;
+        start2.y += kDocumentHeight / 2.0f;
+        
+        end2.x -= kDocumentWidth / 2.0f;
+        end2.y -= kDocumentHeight / 2.0f;
+        end2.x *= -1.0f;
+        end2.y *= -1.0f;
+        end2.x += kDocumentWidth / 2.0f;
+        end2.y += kDocumentHeight / 2.0f;
 	}
 	
 //	start2.x += -camera.viewPos.x;
