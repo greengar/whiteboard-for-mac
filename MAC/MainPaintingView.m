@@ -143,9 +143,7 @@ GLint zoomAutomaticCountdown = 1;
 
 - (void)touchesMovedWithEvent:(NSEvent *)event {
     double dx, dy;
-    DLog(@"%f, %f", dx, dy);
 	if([event type] == NSEventTypeGesture) {
-        DLog(@"%d", [event subtype]);
 		if(([event subtype] & NSTouchPhaseMoved) && ([event subtype] & NSTouchPhaseStationary)) {
 			NSArray* touches = [[event touchesMatchingPhase: NSTouchPhaseTouching inView: self] allObjects];
 			if(touches.count == 2) {
@@ -422,21 +420,8 @@ GLint zoomAutomaticCountdown = 1;
 		[AppDelegate setTrueColorAndOpacity:trueColorAndOpacity];
 		
 		if (isBeing180Rotated) {
-//			start2.x = kDocumentWidth - start2.x;	start2.y = kDocumentHeight - start2.y;
-//			end2.x = kDocumentWidth - end2.x;	end2.y = kDocumentHeight - end2.y;
-            start2.x -= kDocumentWidth / 2.0f;
-            start2.y -= kDocumentHeight / 2.0f;
-            start2.x *= -1.0f;
-            start2.y *= -1.0f;
-            start2.x += kDocumentWidth / 2.0f;
-            start2.y += kDocumentHeight / 2.0f;
-            
-            end2.x -= kDocumentWidth / 2.0f;
-            end2.y -= kDocumentHeight / 2.0f;
-            end2.x *= -1.0f;
-            end2.y *= -1.0f;
-            end2.x += kDocumentWidth / 2.0f;
-            end2.y += kDocumentHeight / 2.0f;
+			start2.x = kDocumentWidth - start2.x;	start2.y = kDocumentHeight - start2.y;
+			end2.x = kDocumentWidth - end2.x;	end2.y = kDocumentHeight - end2.y;
 		}
 		
 		[AppDelegate sendLineFromPoint:start2 toPoint:end2];
