@@ -369,7 +369,9 @@ BOOL USE_HEX_STRING_IMAGE_DATA = YES;
 	[drawingView renderLineFromPoint:NSZeroPoint toPoint:NSZeroPoint];
     
 #ifndef AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER    
-    [[NSApp mainMenu] removeItem:fullscreenMenuItem];
+    // remove Toggle Fullscreen menu item if it's Snow Leopard
+    NSMenu *viewMenu=[[[NSApp mainMenu] itemAtIndex:4] submenu];
+    [viewMenu removeItem:[viewMenu itemWithTag:998]];
 #endif
 }
 
