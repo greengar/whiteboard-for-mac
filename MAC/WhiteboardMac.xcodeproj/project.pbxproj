@@ -423,7 +423,7 @@
 		69805D7712CCACB600CE878C /* Gnome-Edit-Undo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "Gnome-Edit-Undo.icns"; path = "Resources/Toolbar/Gnome-Edit-Undo.icns"; sourceTree = SOURCE_ROOT; };
 		69805D9412CCD33400CE878C /* Gnome-Go-Jump.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "Gnome-Go-Jump.icns"; path = "Resources/Toolbar/Gnome-Go-Jump.icns"; sourceTree = SOURCE_ROOT; };
 		69805D9612CCD33900CE878C /* Tab-Bar-Position.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Tab-Bar-Position.png"; path = "Resources/Toolbar/Tab-Bar-Position.png"; sourceTree = SOURCE_ROOT; };
-		69B5207112F2976F002C5D1D /* Whiteboard Pro Collaborative Drawing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Whiteboard Pro Collaborative Drawing.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		69B5207112F2976F002C5D1D /* Whiteboard  Pro Collaborative Drawing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Whiteboard  Pro Collaborative Drawing.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		69B5207312F2976F002C5D1D /* WhiteboardPro-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WhiteboardPro-Info.plist"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Whiteboard-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Whiteboard-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Whiteboard Lite Collaborative Drawing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Whiteboard Lite Collaborative Drawing.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -545,7 +545,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* Whiteboard Lite Collaborative Drawing.app */,
-				69B5207112F2976F002C5D1D /* Whiteboard Pro Collaborative Drawing.app */,
+				69B5207112F2976F002C5D1D /* Whiteboard  Pro Collaborative Drawing.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -931,7 +931,7 @@
 			name = WhiteboardPro;
 			productInstallPath = "$(HOME)/Applications";
 			productName = WhiteboardMac;
-			productReference = 69B5207112F2976F002C5D1D /* Whiteboard Pro Collaborative Drawing.app */;
+			productReference = 69B5207112F2976F002C5D1D /* Whiteboard  Pro Collaborative Drawing.app */;
 			productType = "com.apple.product-type.application";
 		};
 		8D1107260486CEB800E47090 /* Whiteboard */ = {
@@ -1365,7 +1365,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = "-DDEBUG";
-				PRODUCT_NAME = "Whiteboard Pro Collaborative Drawing";
+				PRODUCT_NAME = "Whiteboard  Pro Collaborative Drawing";
 			};
 			name = Debug;
 		};
@@ -1389,7 +1389,7 @@
 					"\\\"$(SRCROOT)/../trunk/Collaboration/XMPP/Vendor/libidn\\\"",
 				);
 				OTHER_CFLAGS = "";
-				PRODUCT_NAME = "Whiteboard Pro Collaborative Drawing";
+				PRODUCT_NAME = "Whiteboard  Pro Collaborative Drawing";
 			};
 			name = "Ad Hoc";
 		};
@@ -1413,7 +1413,7 @@
 					"\\\"$(SRCROOT)/../trunk/Collaboration/XMPP/Vendor/libidn\\\"",
 				);
 				OTHER_CFLAGS = "";
-				PRODUCT_NAME = "Whiteboard Pro Collaborative Drawing";
+				PRODUCT_NAME = "Whiteboard  Pro Collaborative Drawing";
 			};
 			name = Release;
 		};
@@ -1438,7 +1438,7 @@
 					"\\\"$(SRCROOT)/../trunk/Collaboration/XMPP/Vendor/libidn\\\"",
 				);
 				OTHER_CFLAGS = "";
-				PRODUCT_NAME = "Whiteboard Pro Collaborative Drawing";
+				PRODUCT_NAME = "Whiteboard  Pro Collaborative Drawing";
 			};
 			name = Distribution;
 		};
