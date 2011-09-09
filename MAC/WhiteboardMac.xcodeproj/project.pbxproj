@@ -426,7 +426,7 @@
 		69B5207112F2976F002C5D1D /* Whiteboard Pro Collaborative Drawing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Whiteboard Pro Collaborative Drawing.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		69B5207312F2976F002C5D1D /* WhiteboardPro-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WhiteboardPro-Info.plist"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Whiteboard-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Whiteboard-Info.plist"; sourceTree = "<group>"; };
-		8D1107320486CEB800E47090 /* Whiteboard Mac Collaborative Drawing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Whiteboard Mac Collaborative Drawing.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D1107320486CEB800E47090 /* Whiteboard Lite Collaborative Drawing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Whiteboard Lite Collaborative Drawing.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8D4A8E813E29BCB00E5147F /* How to add GreengarPromoAds.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; name = "How to add GreengarPromoAds.rtf"; path = "../../../greengar/GreengarPromoAds/How to add GreengarPromoAds.rtf"; sourceTree = "<group>"; };
 		B8D4A9A413E29E3F00E5147F /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		B8D4A9A613E29E5000E5147F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -544,7 +544,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107320486CEB800E47090 /* Whiteboard Mac Collaborative Drawing.app */,
+				8D1107320486CEB800E47090 /* Whiteboard Lite Collaborative Drawing.app */,
 				69B5207112F2976F002C5D1D /* Whiteboard Pro Collaborative Drawing.app */,
 			);
 			name = Products;
@@ -950,7 +950,7 @@
 			name = Whiteboard;
 			productInstallPath = "$(HOME)/Applications";
 			productName = WhiteboardMac;
-			productReference = 8D1107320486CEB800E47090 /* Whiteboard Mac Collaborative Drawing.app */;
+			productReference = 8D1107320486CEB800E47090 /* Whiteboard Lite Collaborative Drawing.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1297,7 +1297,7 @@
 					"\"$(SRCROOT)/../trunk/Collaboration/XMPP/Vendor/libidn\"",
 				);
 				OTHER_CFLAGS = "-DLITE";
-				PRODUCT_NAME = "Whiteboard Mac Collaborative Drawing";
+				PRODUCT_NAME = "Whiteboard Lite Collaborative Drawing";
 			};
 			name = "Ad Hoc";
 		};
@@ -1342,7 +1342,7 @@
 					"\"$(SRCROOT)/../trunk/Collaboration/XMPP/Vendor/libidn\"",
 				);
 				OTHER_CFLAGS = "-DLITE";
-				PRODUCT_NAME = "Whiteboard Mac Collaborative Drawing";
+				PRODUCT_NAME = "Whiteboard Lite Collaborative Drawing";
 			};
 			name = Distribution;
 		};
@@ -1464,7 +1464,7 @@
 					"-DLITE",
 					"-DDEBUG",
 				);
-				PRODUCT_NAME = "Whiteboard Mac Collaborative Drawing";
+				PRODUCT_NAME = "Whiteboard Lite Collaborative Drawing";
 			};
 			name = Debug;
 		};
@@ -1488,7 +1488,7 @@
 					"\"$(SRCROOT)/../trunk/Collaboration/XMPP/Vendor/libidn\"",
 				);
 				OTHER_CFLAGS = "-DLITE";
-				PRODUCT_NAME = "Whiteboard Mac Collaborative Drawing";
+				PRODUCT_NAME = "Whiteboard Lite Collaborative Drawing";
 			};
 			name = Release;
 		};
