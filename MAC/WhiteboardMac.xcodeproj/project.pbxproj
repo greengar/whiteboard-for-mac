@@ -1316,6 +1316,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PREBINDING = NO;
+				PROVISIONING_PROFILE = "940E0A8D-B6A8-4199-B348-1E9DA59D1271";
 				SDKROOT = macosx;
 				VALID_ARCHS = "x86_64 i386";
 			};
@@ -1421,6 +1422,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: GreenGar Studios";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1439,6 +1441,7 @@
 				);
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "Whiteboard Pro";
+				PROVISIONING_PROFILE = "940E0A8D-B6A8-4199-B348-1E9DA59D1271";
 			};
 			name = Distribution;
 		};
