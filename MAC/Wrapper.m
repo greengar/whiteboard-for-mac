@@ -127,7 +127,7 @@
     // File upload code adapted from http://www.cocoadev.com/index.pl?HTTPFileUpload
     // and http://www.cocoadev.com/index.pl?HTTPFileUploadSample
 
-    NSString* stringBoundary = [NSString stringWithString:@"0xKhTmLbOuNdArY"];
+    NSString* stringBoundary = @"0xKhTmLbOuNdArY";
     
     NSMutableDictionary* headers = [[[NSMutableDictionary alloc] init] autorelease];
     [headers setValue:@"no-cache" forKey:@"Cache-Control"];
@@ -146,7 +146,7 @@
 	// Model (model)
 	NSString *model = @"MAC";//[UIDevice currentDevice].model;
 	
-	[postData appendData:[[NSString stringWithString:@"Content-Disposition: form-data; name=\"model\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+	[postData appendData:[@"Content-Disposition: form-data; name=\"model\"\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
 	[postData appendData:[[NSString stringWithString:model] dataUsingEncoding:NSUTF8StringEncoding]];
 	[postData appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",stringBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
 	
@@ -154,7 +154,7 @@
 	// Device UID (deviceuid)
 	NSString *deviceuid = @"MyUUID";//[UIDevice currentDevice].uniqueIdentifier;
 	
-	[postData appendData:[[NSString stringWithString:@"Content-Disposition: form-data; name=\"deviceuid\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+	[postData appendData:[@"Content-Disposition: form-data; name=\"deviceuid\"\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
 	[postData appendData:[[NSString stringWithString:deviceuid] dataUsingEncoding:NSUTF8StringEncoding]];
 	[postData appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",stringBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
 	
@@ -162,7 +162,7 @@
 	// Date (date)
 	NSString *date = [NSString stringWithFormat:@"%lf", [[NSDate date] timeIntervalSince1970]];
 	
-	[postData appendData:[[NSString stringWithString:@"Content-Disposition: form-data; name=\"date\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+	[postData appendData:[@"Content-Disposition: form-data; name=\"date\"\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
 	[postData appendData:[[NSString stringWithString:date] dataUsingEncoding:NSUTF8StringEncoding]];
 	[postData appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",stringBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
 	
@@ -172,13 +172,13 @@
 	NSString *validationKey = [[NSString stringWithFormat:@"%@%@%@%@", salt, model, deviceuid, date] md5sum];
 	
 	
-	[postData appendData:[[NSString stringWithString:@"Content-Disposition: form-data; name=\"validationKey\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+	[postData appendData:[@"Content-Disposition: form-data; name=\"validationKey\"\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
 	[postData appendData:[[NSString stringWithString:validationKey] dataUsingEncoding:NSUTF8StringEncoding]];
 	[postData appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",stringBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
 	
 	
-	[postData appendData:[[NSString stringWithString:@"Content-Disposition: form-data; name=\"userfile\"; filename=\"ipodfile.png\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-	[postData appendData:[[NSString stringWithString:@"Content-Type: application/octet-stream\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+	[postData appendData:[@"Content-Disposition: form-data; name=\"userfile\"; filename=\"ipodfile.png\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+	[postData appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
 	
     [postData appendData:data];
     [postData appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", stringBoundary] dataUsingEncoding:NSUTF8StringEncoding]];

@@ -519,7 +519,7 @@ static NSNetService *currentResolve = nil;
 		else {
 			if(!sendID) break;
 			
-			tempStr = [NSString stringWithString:@""];
+			tempStr = @"";
 		}
 		
 		//Append End Identifier if this is the last loop
